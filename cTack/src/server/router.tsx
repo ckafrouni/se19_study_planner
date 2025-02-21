@@ -126,10 +126,15 @@ function routerReducer(
       const Page = require(node.fullPath).default;
       return router.get(
         node.url,
-        () =>
-          DEV
-            ? injectLiveReloadScript(wrapWithLayouts(Page, currentLayouts))()
-            : Page(),
+        ({ query }) => {
+          return DEV ? (
+            injectLiveReloadScript(
+              wrapWithLayouts(() => <Page query={query} />, currentLayouts)
+            )()
+          ) : (
+            <Page query={query} />
+          );
+        },
         {}
       );
     case "route":
