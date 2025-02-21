@@ -1,3 +1,7 @@
-import { Handler } from "elysia";
+import { Context } from "elysia";
 
-export const GET: Handler = (ctx) => "API (/foo) : Hello World";
+export function GET(ctx: Context) {
+  return {
+    message: "API (/foo) : Hello World",
+  };
+}

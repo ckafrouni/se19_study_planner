@@ -2,10 +2,10 @@
   "name": "se19_study_planner",
   "version": "1.0.50",
   "scripts": {
-    "dev:server": "bun run --watch src/server.ts",
+    "dev:server": "bun run --watch cli",
     "dev:tailwind": "tailwindcss -i ./src/app/pages/styles.css -o ./public/style.css --watch",
     "build": "tailwindcss -i ./src/app/pages/styles.css -o ./public/style.css",
-    "start": "bun run src/server.ts",
+    "start": "bun run cli",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
