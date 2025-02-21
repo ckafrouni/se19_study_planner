@@ -1,11 +1,12 @@
 import { Elysia } from "elysia";
 import { html } from "@elysiajs/html";
-import logger from "./utils/logger";
 import staticPlugin from "@elysiajs/static";
 import swagger from "@elysiajs/swagger";
 
 import fs from "fs";
 import path from "path";
+
+import logger from "@/utils/logger";
 
 // MARK: - Pages
 

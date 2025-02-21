@@ -1,6 +1,6 @@
 import { Html } from "@elysiajs/html";
-import Footer from "../components/layout/Footer";
-import Navbar from "../components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 export default function RootLayout({ children }: { children: JSX.Element }) {
   return (

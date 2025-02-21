@@ -1,5 +1,5 @@
 import { Html } from "@elysiajs/html";
-import { ButtonLink } from "../ui/button";
+import { ButtonLink } from "@/components/ui/button";
 
 export default function Navbar({ class: className }: { class?: string }) {
   return (
