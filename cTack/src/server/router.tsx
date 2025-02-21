@@ -18,6 +18,7 @@ interface AppNode {
     DELETE?: Handler;
   };
   layout?: (props: { children: JSX.Element }) => JSX.Element;
+  paramName?: string;
 }
 
 function injectLiveReloadScript(
@@ -34,13 +35,19 @@ function injectLiveReloadScript(
 function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
   const entry = fs.statSync(dir);
   const name = path.basename(dir);
+  const isDynamic = name.startsWith("[") && name.endsWith("]");
+  const paramName = isDynamic ? name.slice(1, -1) : undefined;
 
   if (entry.isDirectory()) {
     const children = fs
       .readdirSync(dir, { withFileTypes: true })
       .map((childEntry) => {
         const childPath = path.join(dir, childEntry.name);
-        const childUrl = name === "app" ? baseUrl : path.join(baseUrl, name);
+        let childUrl = name === "app" ? baseUrl : path.join(baseUrl, name);
+        if (isDynamic) {
+          childUrl =
+            name === "app" ? baseUrl : path.join(baseUrl, `:${paramName}`);
+        }
         return buildAppStructure(childPath, childUrl);
       })
       .filter(Boolean);
@@ -56,6 +63,7 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
       fullPath: dir,
       url: name === "app" ? "/" : path.join(baseUrl, name),
       children,
+      paramName,
       layout: layoutFile ? require(layoutFile.fullPath).default : undefined,
     };
   } else {
@@ -126,10 +134,13 @@ function routerReducer(
       const Page = require(node.fullPath).default;
       return router.get(
         node.url,
-        ({ query }) => {
+        ({ query, params }) => {
           return DEV ? (
             injectLiveReloadScript(
-              wrapWithLayouts(() => <Page query={query} />, currentLayouts)
+              wrapWithLayouts(
+                () => <Page params={params} query={query} />,
+                currentLayouts
+              )
             )()
           ) : (
             <Page query={query} />
@@ -154,6 +165,6 @@ function routerReducer(
 
 export function generateRouter(dir: string): Elysia {
   const appStructure = buildAppStructure(dir);
-  // console.log(JSON.stringify(appStructure, null, 2));
+  console.log(JSON.stringify(appStructure, null, 2));
   return routerReducer(new Elysia(), appStructure);
 }
