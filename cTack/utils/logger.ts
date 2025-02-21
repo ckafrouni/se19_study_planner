@@ -2,31 +2,25 @@ import { Elysia } from "elysia";
 
 export const logger = new Elysia()
   .derive({ as: "global" }, () => ({ start: Date.now() }))
-  // .onBeforeHandle({ as: "global" }, (ctx) => {
-  //   if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
-  //   console.log("<--", ctx.request.method, ctx.path);
-  // })
-  .onAfterHandle({ as: "global" }, (ctx) => {
-    if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
+  .onAfterHandle({ as: "global" }, ({ request, path, set, start }) => {
     console.log(
-      "-->",
-      ctx.request.method,
-      ctx.path,
-      ctx.set.status ?? Number.NaN,
+      `\x1b[0;34m${request.method}\x1b[0m`,
+      `\x1b[0;33m${set.status}\x1b[0m`,
+      `\x1b[1;36m${path}\x1b[0m`,
       "in",
-      Date.now() - ctx.start,
+      `\x1b[0;35m${Date.now() - start}\x1b[0m`,
       "ms"
     );
   })
-  .onError({ as: "global" }, (ctx) => {
-    if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
+  .onError({ as: "global" }, ({ request, path, set, start }) => {
+    if (!start) start = Date.now();
+
     console.log(
-      "-->",
-      ctx.request.method,
-      ctx.path,
-      ctx.set.status,
+      `\x1b[1;34m${request.method}\x1b[0m`,
+      `\x1b[0;33m${set.status}\x1b[0m`,
+      `\x1b[1;32m${path}\x1b[0m`,
       "in",
-      ctx.start ? Date.now() - ctx.start : Number.NaN,
+      `\x1b[0;35m${Date.now() - start}\x1b[0m`,
       "ms"
     );
   });
