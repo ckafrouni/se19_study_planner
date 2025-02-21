@@ -3,6 +3,8 @@ import path from "path";
 import Elysia, { Handler } from "elysia";
 import { Html } from "@elysiajs/html";
 
+const DEV = process.env.NODE_ENV !== "production";
+
 interface AppNode {
   type: "directory" | "page" | "route" | "layout" | "unknown";
   name: string;
@@ -124,7 +126,10 @@ function routerReducer(
       const Page = require(node.fullPath).default;
       return router.get(
         node.url,
-        () => injectLiveReloadScript(wrapWithLayouts(Page, currentLayouts))(),
+        () =>
+          DEV
+            ? injectLiveReloadScript(wrapWithLayouts(Page, currentLayouts))()
+            : Page(),
         {}
       );
     case "route":

@@ -89,9 +89,9 @@ const watchFiles = ({ dir }: { dir: string }) => {
   });
 };
 
-const startWebSocketServer = () => {
+const startLiveReloadWebSocketServer = () => {
   wss = new WebSocketServer({ port: 3001 });
-  console.log(`🦊 \x1b[1;30mWebSocket server started on port 3001\x1b[0m`);
+  console.log(`🦊 \x1b[1;30mLive reload server started on port 3001\x1b[0m`);
 
   wss.on("connection", (ws) => {
     console.log(`🦊 \x1b[1;30mLive reload client connected\x1b[0m`);
@@ -138,7 +138,7 @@ const start_command = () => {
 };
 
 const dev_command = ({ appDir, dev }: { appDir: string; dev: boolean }) => {
-  startWebSocketServer();
+  startLiveReloadWebSocketServer();
   runTailwind(true);
   runServer({ dev });
   watchFiles({ dir: appDir });
