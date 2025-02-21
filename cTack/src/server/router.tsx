@@ -43,11 +43,10 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
       .readdirSync(dir, { withFileTypes: true })
       .map((childEntry) => {
         const childPath = path.join(dir, childEntry.name);
-        let childUrl = name === "app" ? baseUrl : path.join(baseUrl, name);
-        if (isDynamic) {
-          childUrl =
-            name === "app" ? baseUrl : path.join(baseUrl, `:${paramName}`);
-        }
+        let childUrl =
+          name === "app"
+            ? baseUrl
+            : path.join(baseUrl, isDynamic ? `:${paramName}` : name);
         return buildAppStructure(childPath, childUrl);
       })
       .filter(Boolean);
@@ -61,7 +60,10 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
       type: "directory",
       name,
       fullPath: dir,
-      url: name === "app" ? "/" : path.join(baseUrl, name),
+      url:
+        name === "app"
+          ? "/"
+          : path.join(baseUrl, isDynamic ? `:${paramName}` : name),
       children,
       paramName,
       layout: layoutFile ? require(layoutFile.fullPath).default : undefined,
@@ -135,28 +137,21 @@ function routerReducer(
       return router.get(
         node.url,
         ({ query, params }) => {
-          return DEV ? (
-            injectLiveReloadScript(
-              wrapWithLayouts(
-                () => <Page params={params} query={query} />,
-                currentLayouts
-              )
-            )()
-          ) : (
-            <Page query={query} />
-          );
+          const pageComponent = () => <Page params={params} query={query} />;
+          return DEV
+            ? injectLiveReloadScript(
+                wrapWithLayouts(pageComponent, currentLayouts)
+              )()
+            : wrapWithLayouts(pageComponent, currentLayouts)();
         },
         {}
       );
     case "route":
-      if (node.routes?.GET)
-        router = router.get(node.url, () => node.routes?.GET);
-      if (node.routes?.POST)
-        router = router.post(node.url, () => node.routes?.POST);
-      if (node.routes?.PUT)
-        router = router.put(node.url, () => node.routes?.PUT);
+      if (node.routes?.GET) router = router.get(node.url, node.routes.GET);
+      if (node.routes?.POST) router = router.post(node.url, node.routes.POST);
+      if (node.routes?.PUT) router = router.put(node.url, node.routes.PUT);
       if (node.routes?.DELETE)
-        router = router.delete(node.url, () => node.routes?.DELETE);
+        router = router.delete(node.url, node.routes.DELETE);
       return router;
     default:
       return router;
