@@ -1,6 +1,5 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { html } from "@elysiajs/html";
-import api from "./app/api";
 import logger from "./utils/logger";
 import staticPlugin from "@elysiajs/static";
 import swagger from "@elysiajs/swagger";
@@ -8,13 +7,12 @@ import swagger from "@elysiajs/swagger";
 import fs from "fs";
 import path from "path";
 
-// Pages
+// MARK: - Pages
 
 import RootLayout from "./app/pages/layout";
 
 const wrap = (Page: JSX.Element) => RootLayout({ children: Page });
 
-// Function to generate routes recursively
 function generatePagesRouter(
   dir: string,
   baseRoute: string = "",
@@ -36,12 +34,38 @@ function generatePagesRouter(
   return router;
 }
 
-// Generate pages router
 const pagesRouter = generatePagesRouter(path.join(__dirname, "app", "pages"));
 
-// API
+// MARK: - API
 
-// App
+function generateApiRouter(
+  dir: string,
+  baseRoute: string = "",
+  router = new Elysia()
+) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      generateApiRouter(fullPath, path.join(baseRoute, entry.name), router);
+    } else if (entry.name === "route.ts" || entry.name === "route.js") {
+      const route_url = baseRoute === "" ? "/" : baseRoute;
+      const routes = require(fullPath);
+
+      router = router.get(route_url, () => routes.GET());
+      router = router.post(route_url, () => routes.POST());
+      router = router.put(route_url, () => routes.PUT());
+      router = router.delete(route_url, () => routes.DELETE());
+    }
+  }
+
+  return router;
+}
+
+const api = generateApiRouter(path.join(__dirname, "app", "api"));
+
+// MARK: - App
 
 const app = new Elysia()
   .use(logger)
