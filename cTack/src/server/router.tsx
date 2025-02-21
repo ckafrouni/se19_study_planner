@@ -107,10 +107,12 @@ function routerReducer(
 
   switch (node.type) {
     case "directory":
-      return node.children?.reduce(
-        (r, child) => routerReducer(r, child, currentLayouts),
-        router
-      ) ?? router;
+      return (
+        node.children?.reduce(
+          (r, child) => routerReducer(r, child, currentLayouts),
+          router
+        ) ?? router
+      );
     case "page":
       const Page = require(node.fullPath).default;
       return router.get(
@@ -136,6 +138,6 @@ function routerReducer(
 // Main function to generate the router
 export function generateRouter(dir: string): Elysia {
   const appStructure = buildAppStructure(dir);
-  console.log(JSON.stringify(appStructure, null, 2));
+  // console.log(JSON.stringify(appStructure, null, 2));
   return routerReducer(new Elysia(), appStructure);
 }

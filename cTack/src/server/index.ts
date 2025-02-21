@@ -21,7 +21,11 @@ const app = new Elysia()
   .use(html({ autoDetect: true }))
   .use(logger)
   .use(appRouter)
-  .use(staticPlugin())
+  .use(
+    staticPlugin({
+      noCache: process.env.NODE_ENV !== "production",
+    })
+  )
   .use(swagger({ path: "/swagger" }))
   .onStart((app) => {
     console.log(

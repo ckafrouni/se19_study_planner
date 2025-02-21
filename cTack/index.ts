@@ -37,7 +37,7 @@ const runTailwind = (watch = false) => {
   }
 };
 
-const runServer = () => {
+const runServer = ({ dev = false }: { dev: boolean }) => {
   if (serverProcess) {
     console.log(`🦊 \x1b[1;30mRestarting server...\x1b[0m`);
     serverProcess.kill();
@@ -45,10 +45,16 @@ const runServer = () => {
     console.log(`🦊 \x1b[1;30mStarting server...\x1b[0m`);
   }
 
-  const command = ["bun", "run"];
+  const command = ["bun", "run", "--env"];
   command.push("cTack/src/server");
 
-  serverProcess = spawn(command[0], command.slice(1), { stdio: "inherit" });
+  serverProcess = spawn(command[0], command.slice(1), {
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      NODE_ENV: dev ? "development" : "production",
+    },
+  });
 
   serverProcess.on("close", (code) => {
     if (code) {
@@ -61,13 +67,13 @@ const runServer = () => {
   return serverProcess;
 };
 
-const watchFiles = (dir: string) => {
+const watchFiles = ({ dir }: { dir: string }) => {
   console.log(`🦊 \x1b[1;30mWatching for file changes\x1b[0m`);
 
   fileWatcher = watch(dir, { recursive: true }, (eventType, filename) => {
     if (filename) {
       console.log(`🦊 \x1b[1;30mFile ${filename} has been ${eventType}\x1b[0m`);
-      runServer();
+      runServer({ dev: true });
     }
   });
 };
@@ -104,13 +110,13 @@ const build_watch_command = () => {
 };
 
 const start_command = () => {
-  runServer();
+  runServer({ dev: false });
 };
 
-const dev_command = (appDir: string) => {
+const dev_command = ({ appDir, dev }: { appDir: string; dev: boolean }) => {
   runTailwind(true);
-  runServer();
-  watchFiles(appDir);
+  runServer({ dev });
+  watchFiles({ dir: appDir });
 };
 
 const error_command = () => {
@@ -134,7 +140,7 @@ const main = async () => {
 
   switch (args[0]) {
     case "dev":
-      dev_command(APP_DIR);
+      dev_command({ appDir: APP_DIR, dev: true });
       break;
     case "build":
       build_command();
