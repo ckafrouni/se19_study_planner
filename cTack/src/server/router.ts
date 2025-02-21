@@ -1,21 +1,12 @@
-import { Elysia } from "elysia";
-import { html } from "@elysiajs/html";
-import staticPlugin from "@elysiajs/static";
-import swagger from "@elysiajs/swagger";
-
 import fs from "fs";
 import path from "path";
+import Elysia from "elysia";
 
-import logger from "./utils/logger";
-
-// MARK: - Router
-const APP_DIR = path.join(path.dirname(__dirname), "src", "app");
-
-import RootLayout from "../src/app/layout";
+import RootLayout from "../../../src/app/layout";
 
 const wrap = (Page: JSX.Element) => RootLayout({ children: Page });
 
-function generateRouter(
+export function generateRouter(
   dir: string,
   baseRoute: string = "",
   router = new Elysia()
@@ -51,21 +42,3 @@ function generateRouter(
 
   return router;
 }
-
-const appRouter = generateRouter(APP_DIR);
-
-// MARK: - App
-
-const app = new Elysia()
-  .use(html({ autoDetect: true }))
-  .use(logger)
-  .use(appRouter)
-  .use(staticPlugin())
-  .use(swagger({ path: "/swagger" }))
-  .onStart((app) => {
-    console.log(
-      `🦊 \x1b[1;33mcTack\x1b[0m is running at \x1b[1;34mhttp://${app.server?.hostname}:${app.server?.port}\x1b[0m`
-    );
-  });
-
-app.listen(3000);

@@ -1,4 +1,5 @@
 import { spawnSync, spawn } from "child_process";
+import path from "path";
 
 const args = process.argv.slice(2);
 
@@ -17,10 +18,13 @@ const runTailwind = (watch = false) => {
     : spawnSync(command[0], command.slice(1), { stdio: "pipe" });
 };
 
+const ROOT_DIR = process.cwd();
+const APP_DIR = path.join(ROOT_DIR, "src", "app");
+
 const runServer = (watch = false) => {
   const command = ["bun", "run"];
   if (watch) command.push("--watch");
-  command.push("cTack/server");
+  command.push("cTack/src/server");
   return watch
     ? spawn(command[0], command.slice(1), { stdio: "inherit" })
     : spawnSync(command[0], command.slice(1), { stdio: "inherit" });
