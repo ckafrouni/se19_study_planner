@@ -1,20 +1,12 @@
 /**
  * cTack - A Nextjs-like CLI for developing web applications using Elysia and Bun.
  *
- * @argument dev - Run the application in development mode.
- * @argument build - Build the application for production.
- * @argument start - Start the application.
  * @author Christophe Kafrouni
  */
 
 import { spawnSync, spawn, ChildProcess } from "child_process";
 import path from "path";
 import { watch, FSWatcher } from "fs";
-
-const args = process.argv.slice(2);
-
-const ROOT_DIR = process.cwd();
-const APP_DIR = path.join(ROOT_DIR, "src", "app");
 
 let serverProcess: ChildProcess | null = null;
 let tailwindProcess: ChildProcess | null = null;
@@ -69,10 +61,10 @@ const runServer = () => {
   return serverProcess;
 };
 
-const watchFiles = () => {
+const watchFiles = (dir: string) => {
   console.log(`🦊 \x1b[1;30mWatching for file changes\x1b[0m`);
 
-  fileWatcher = watch(APP_DIR, { recursive: true }, (eventType, filename) => {
+  fileWatcher = watch(dir, { recursive: true }, (eventType, filename) => {
     if (filename) {
       console.log(`🦊 \x1b[1;30mFile ${filename} has been ${eventType}\x1b[0m`);
       runServer();
@@ -80,9 +72,6 @@ const watchFiles = () => {
   });
 };
 
-/**
- * Clean up processes on exit
- */
 const cleanup = () => {
   if (serverProcess) serverProcess.kill();
   if (tailwindProcess) tailwindProcess.kill();
@@ -91,26 +80,78 @@ const cleanup = () => {
   process.exit(0);
 };
 
-// Handle cleanup on exit signals
-process.on("SIGINT", cleanup);
-process.on("SIGTERM", cleanup);
+// MARK: - CLI
 
-// Main execution logic
-switch (args[0]) {
-  case "dev":
-    runTailwind(true);
-    runServer();
-    watchFiles();
-    break;
-  case "build":
-    runTailwind();
-    break;
-  case "start":
-    runServer();
-    break;
-  default:
-    console.error(
-      `🦊 \x1b[1;30mInvalid command. Use 'dev', 'build', or 'start'\x1b[0m.`
-    );
+const help_command = () => {
+  console.log(`
+Usage: cTack <command>
+
+Commands:
+  dev           - Run the application in development mode
+  build         - Build the application for production
+  build:watch   - Run the build command in watch mode
+  start         - Start the application
+  help          - Show this help message
+  `);
+};
+
+const build_command = () => {
+  runTailwind();
+};
+
+const build_watch_command = () => {
+  runTailwind(true);
+};
+
+const start_command = () => {
+  runServer();
+};
+
+const dev_command = (appDir: string) => {
+  runTailwind(true);
+  runServer();
+  watchFiles(appDir);
+};
+
+const error_command = () => {
+  console.log(`🦊 \x1b[1;30mUnknown command\x1b[0m`);
+  help_command();
+};
+
+const main = async () => {
+  const args = process.argv.slice(2);
+
+  if (args.length === 0) {
+    help_command();
     process.exit(1);
-}
+  }
+
+  const ROOT_DIR = process.cwd();
+  const APP_DIR = path.join(ROOT_DIR, "src", "app");
+
+  process.on("SIGINT", cleanup);
+  process.on("SIGTERM", cleanup);
+
+  switch (args[0]) {
+    case "dev":
+      dev_command(APP_DIR);
+      break;
+    case "build":
+      build_command();
+      break;
+    case "build:watch":
+      build_watch_command();
+      break;
+    case "start":
+      start_command();
+      break;
+    case "help":
+      help_command();
+      break;
+    default:
+      error_command();
+      process.exit(1);
+  }
+};
+
+main();
