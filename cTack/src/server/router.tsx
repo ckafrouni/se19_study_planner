@@ -3,7 +3,6 @@ import path from "path";
 import Elysia, { Handler } from "elysia";
 import { Html } from "@elysiajs/html";
 
-// Define the structure for our app
 interface AppNode {
   type: "directory" | "page" | "route" | "layout" | "unknown";
   name: string;
@@ -19,7 +18,17 @@ interface AppNode {
   layout?: (props: { children: JSX.Element }) => JSX.Element;
 }
 
-// Function to build the app structure
+function injectLiveReloadScript(
+  component: () => JSX.Element
+): () => JSX.Element {
+  return () => (
+    <>
+      {component()}
+      <script src="/public/live-reload.js"></script>
+    </>
+  );
+}
+
 function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
   const entry = fs.statSync(dir);
   const name = path.basename(dir);
@@ -85,7 +94,6 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
   }
 }
 
-// Helper function to wrap a component with layouts
 function wrapWithLayouts(
   Component: () => JSX.Element,
   layouts: ((props: { children: JSX.Element }) => JSX.Element)[]
@@ -97,7 +105,6 @@ function wrapWithLayouts(
     );
 }
 
-// Reducer function to build the router
 function routerReducer(
   router: Elysia,
   node: AppNode,
@@ -117,7 +124,7 @@ function routerReducer(
       const Page = require(node.fullPath).default;
       return router.get(
         node.url,
-        () => wrapWithLayouts(Page, currentLayouts)(),
+        () => injectLiveReloadScript(wrapWithLayouts(Page, currentLayouts))(),
         {}
       );
     case "route":
@@ -135,7 +142,6 @@ function routerReducer(
   }
 }
 
-// Main function to generate the router
 export function generateRouter(dir: string): Elysia {
   const appStructure = buildAppStructure(dir);
   // console.log(JSON.stringify(appStructure, null, 2));

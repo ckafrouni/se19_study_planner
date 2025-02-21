@@ -7,10 +7,12 @@
 import { spawnSync, spawn, ChildProcess } from "child_process";
 import path from "path";
 import { watch, FSWatcher } from "fs";
+import { WebSocket, WebSocketServer } from "ws";
 
 let serverProcess: ChildProcess | null = null;
 let tailwindProcess: ChildProcess | null = null;
 let fileWatcher: FSWatcher | null = null;
+let wss: WebSocketServer | null = null;
 
 const runTailwind = (watch = false) => {
   const command = [
@@ -64,6 +66,15 @@ const runServer = ({ dev = false }: { dev: boolean }) => {
     }
   });
 
+  // Send reload signal to all connected clients
+  if (wss) {
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send("reload");
+      }
+    });
+  }
+
   return serverProcess;
 };
 
@@ -78,10 +89,23 @@ const watchFiles = ({ dir }: { dir: string }) => {
   });
 };
 
+const startWebSocketServer = () => {
+  wss = new WebSocketServer({ port: 3001 });
+  console.log(`🦊 \x1b[1;30mWebSocket server started on port 3001\x1b[0m`);
+
+  wss.on("connection", (ws) => {
+    console.log(`🦊 \x1b[1;30mLive reload client connected\x1b[0m`);
+    ws.on("close", () =>
+      console.log(`🦊 \x1b[1;30mLive reload client disconnected\x1b[0m`)
+    );
+  });
+};
+
 const cleanup = () => {
   if (serverProcess) serverProcess.kill();
   if (tailwindProcess) tailwindProcess.kill();
   if (fileWatcher) fileWatcher.close();
+  if (wss) wss.close();
   console.log(`🦊 \x1b[1;30mCleaned up processes\x1b[0m`);
   process.exit(0);
 };
@@ -114,6 +138,7 @@ const start_command = () => {
 };
 
 const dev_command = ({ appDir, dev }: { appDir: string; dev: boolean }) => {
+  startWebSocketServer();
   runTailwind(true);
   runServer({ dev });
   watchFiles({ dir: appDir });
