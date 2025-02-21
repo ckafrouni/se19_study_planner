@@ -2,10 +2,10 @@ import { Elysia } from "elysia";
 
 export const logger = new Elysia()
   .derive({ as: "global" }, () => ({ start: Date.now() }))
-  .onBeforeHandle({ as: "global" }, (ctx) => {
-    if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
-    console.log("<--", ctx.request.method, ctx.path);
-  })
+  // .onBeforeHandle({ as: "global" }, (ctx) => {
+  //   if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
+  //   console.log("<--", ctx.request.method, ctx.path);
+  // })
   .onAfterHandle({ as: "global" }, (ctx) => {
     if (!["GET", "PUT", "POST", "DELETE"].includes(ctx.request.method)) return;
     console.log(

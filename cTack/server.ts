@@ -64,7 +64,7 @@ const app = new Elysia()
   .use(swagger({ path: "/swagger" }))
   .onStart((app) => {
     console.log(
-      `🦊 \x1b[0;32mcTack\x1b[0m is running at \x1b[0;32mhttp://${app.server?.hostname}:${app.server?.port}\x1b[0m`
+      `🦊 \x1b[1;33mcTack\x1b[0m is running at \x1b[1;34mhttp://${app.server?.hostname}:${app.server?.port}\x1b[0m`
     );
   });
 

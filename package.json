@@ -2,11 +2,9 @@
   "name": "se19_study_planner",
   "version": "1.0.50",
   "scripts": {
-    "dev:server": "bun run --watch cli",
-    "dev:tailwind": "tailwindcss -i ./src/app/pages/styles.css -o ./public/style.css --watch",
-    "build": "tailwindcss -i ./src/app/pages/styles.css -o ./public/style.css",
-    "start": "bun run cli",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun run cTack dev",
+    "build": "bun run cTack build",
+    "start": "bun run cTack start"
   },
   "dependencies": {
     "@elysiajs/html": "^1.2.0",
@@ -19,5 +17,5 @@
     "bun-types": "latest",
     "tailwindcss": "^4.0.7"
   },
-  "module": "src/server.js"
+  "module": "cTack"
 }
