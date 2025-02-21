@@ -9,6 +9,7 @@ import logger from "../utils/logger";
 import { generateRouter } from "./router";
 
 // MARK: - Router
+
 const ROOT_DIR = process.cwd();
 const APP_DIR = path.join(ROOT_DIR, "src", "app");
 
