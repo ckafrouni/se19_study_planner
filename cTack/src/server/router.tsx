@@ -6,7 +6,7 @@ import { Html } from "@elysiajs/html";
 const DEV = process.env.NODE_ENV !== "production";
 
 interface AppNode {
-  type: "directory" | "page" | "route" | "layout" | "unknown";
+  type: "directory" | "page" | "route" | "layout" | "unknown" | "group";
   name: string;
   fullPath: string;
   url: string;
@@ -36,6 +36,7 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
   const entry = fs.statSync(dir);
   const name = path.basename(dir);
   const isDynamic = name.startsWith("[") && name.endsWith("]");
+  const isGroup = name.startsWith("(") && name.endsWith(")");
   const paramName = isDynamic ? name.slice(1, -1) : undefined;
 
   if (entry.isDirectory()) {
@@ -43,10 +44,10 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
       .readdirSync(dir, { withFileTypes: true })
       .map((childEntry) => {
         const childPath = path.join(dir, childEntry.name);
-        let childUrl =
-          name === "app"
-            ? baseUrl
-            : path.join(baseUrl, isDynamic ? `:${paramName}` : name);
+        let childUrl = baseUrl;
+        if (!isGroup && name !== "app") {
+          childUrl = path.join(baseUrl, isDynamic ? `:${paramName}` : name);
+        }
         return buildAppStructure(childPath, childUrl);
       })
       .filter(Boolean);
@@ -57,13 +58,14 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
     }
 
     return {
-      type: "directory",
+      type: isGroup ? "group" : "directory",
       name,
       fullPath: dir,
-      url:
-        name === "app"
-          ? "/"
-          : path.join(baseUrl, isDynamic ? `:${paramName}` : name),
+      url: isGroup
+        ? baseUrl
+        : name === "app"
+        ? "/"
+        : path.join(baseUrl, isDynamic ? `:${paramName}` : name),
       children,
       paramName,
       layout: layoutFile ? require(layoutFile.fullPath).default : undefined,
@@ -124,6 +126,7 @@ function routerReducer(
 
   switch (node.type) {
     case "directory":
+    case "group":
       return (
         node.children?.reduce(
           (r, child) => routerReducer(r, child, currentLayouts),
