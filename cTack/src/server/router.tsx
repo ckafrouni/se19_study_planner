@@ -69,9 +69,7 @@ function buildAppStructure(dir: string, baseUrl: string = "/"): AppNode {
       layout: layoutFile ? require(layoutFile.fullPath).default : undefined,
     };
   } else {
-    const url = name.startsWith("page.")
-      ? baseUrl
-      : path.join(baseUrl, name.split(".")[0]);
+    const url = baseUrl;
     if (name === "page.tsx" || name === "page.jsx") {
       return {
         type: "page",
