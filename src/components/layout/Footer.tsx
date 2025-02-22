@@ -1,19 +1,17 @@
-import { Html } from "@elysiajs/html";
-
 export default function Footer() {
   return (
-    <footer class=" border-t border-gray-200 text-sm text-gray-500">
-      <div class="container mx-auto flex items-center justify-between p-3 w-full">
+    <footer className=" border-t border-gray-200 text-sm text-gray-500">
+      <div className="container mx-auto flex items-center justify-between p-3 w-full">
         <p>© 2024 Study Planner. All rights reserved.</p>
 
-        <div class="flex gap-2">
+        <div className="flex gap-2">
           <a
             href="https://elysiajs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
-              class={"w-6 h-6"}
+              className="w-6 h-6"
               src="/public/icons/ElysiaJS.png"
               alt="ElysiaJS"
             />
@@ -25,7 +23,7 @@ export default function Footer() {
             rel="noopener noreferrer"
           >
             <img
-              class={"w-6 h-6"}
+              className="w-6 h-6"
               src="/public/icons/GitHub.png"
               alt="GitHub"
             />

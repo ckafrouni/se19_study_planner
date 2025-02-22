@@ -6,12 +6,19 @@ import swagger from "@elysiajs/swagger";
 import path from "path";
 
 import logger from "../utils/logger";
-import { generateRouter } from "./router";
+import { buildAppStructure } from "./appBuilder";
+import { routerReducer } from "./routerBuilder";
 
 // MARK: - Router
 
 const ROOT_DIR = process.cwd();
 const APP_DIR = path.join(ROOT_DIR, "src", "app");
+
+export function generateRouter(dir: string): Elysia {
+  const appStructure = buildAppStructure(dir);
+  console.log(JSON.stringify(appStructure, null, 2));
+  return routerReducer(new Elysia(), appStructure);
+}
 
 const appRouter = generateRouter(APP_DIR);
 

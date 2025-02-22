@@ -1,5 +1,3 @@
-import { Html } from "@elysiajs/html";
-
 export default function UserPage({
   params: { user },
   query: { age },
@@ -8,8 +6,8 @@ export default function UserPage({
   query: { age: string };
 }) {
   return (
-    <div class="w-full p-3">
-      <div class="container mx-auto">
+    <div className="w-full p-3">
+      <div className="container mx-auto">
         <h1>User Page</h1>
         <p>User: {user}</p>
         <p>Age: {age}</p>
