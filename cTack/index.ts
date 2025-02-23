@@ -6,13 +6,9 @@
 
 import { spawnSync, spawn, ChildProcess } from "child_process";
 import path from "path";
-import { watch, FSWatcher } from "fs";
-import { WebSocket, WebSocketServer } from "ws";
 
 let serverProcess: ChildProcess | null = null;
 let tailwindProcess: ChildProcess | null = null;
-let fileWatcher: FSWatcher | null = null;
-let wss: WebSocketServer | null = null;
 
 const runTailwind = (watch = false) => {
   const command = [
@@ -66,46 +62,12 @@ const runServer = ({ dev = false }: { dev: boolean }) => {
     }
   });
 
-  // Send reload signal to all connected clients
-  if (wss) {
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send("reload");
-      }
-    });
-  }
-
   return serverProcess;
-};
-
-const watchFiles = ({ dir }: { dir: string }) => {
-  console.log(`🦊 \x1b[1;30mWatching for file changes\x1b[0m`);
-
-  fileWatcher = watch(dir, { recursive: true }, (eventType, filename) => {
-    if (filename) {
-      console.log(`🦊 \x1b[1;30mFile ${filename} has been ${eventType}\x1b[0m`);
-      runServer({ dev: true });
-    }
-  });
-};
-
-const startLiveReloadWebSocketServer = () => {
-  wss = new WebSocketServer({ port: 3001 });
-  console.log(`🦊 \x1b[1;30mLive reload server started on port 3001\x1b[0m`);
-
-  wss.on("connection", (ws) => {
-    console.log(`🦊 \x1b[1;30mLive reload client connected\x1b[0m`);
-    ws.on("close", () =>
-      console.log(`🦊 \x1b[1;30mLive reload client disconnected\x1b[0m`)
-    );
-  });
 };
 
 const cleanup = () => {
   if (serverProcess) serverProcess.kill();
   if (tailwindProcess) tailwindProcess.kill();
-  if (fileWatcher) fileWatcher.close();
-  if (wss) wss.close();
   console.log(`🦊 \x1b[1;30mCleaned up processes\x1b[0m`);
   process.exit(0);
 };
@@ -138,10 +100,8 @@ const start_command = () => {
 };
 
 const dev_command = ({ appDir, dev }: { appDir: string; dev: boolean }) => {
-  startLiveReloadWebSocketServer();
   runTailwind(true);
   runServer({ dev });
-  watchFiles({ dir: appDir });
 };
 
 const error_command = () => {

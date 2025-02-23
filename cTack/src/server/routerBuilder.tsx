@@ -84,7 +84,6 @@ export function routerReducer(
         ) ?? router
       );
     case "page":
-      const Page = require(fullPath).default;
       return pageRouter({
         dev: process.env.NODE_ENV !== "production",
         router,

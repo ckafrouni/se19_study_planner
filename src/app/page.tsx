@@ -6,7 +6,7 @@ export default function HomePage({
   return (
     <div className="w-full p-3">
       <div className="container mx-auto">
-        <h1>Home Page</h1>
+        <h1>Homeles</h1>
         <p>Friend: {friend}</p>
         <p>Enemy: {enemy}</p>
       </div>
