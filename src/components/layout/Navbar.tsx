@@ -1,6 +1,15 @@
 import { ButtonLink } from "@/components/ui/button";
+import { FormButton } from "@/components/ui/form";
 
-export default function Navbar({ className }: { className?: string }) {
+import { Context } from "elysia";
+
+export default function Navbar({
+  className,
+  ctx,
+}: {
+  className?: string;
+  ctx: Context;
+}) {
   return (
     <div
       className={`w-full h-16 p-3 border-b border-gray-200 bg-white text-sm ${className}`}
@@ -11,9 +20,21 @@ export default function Navbar({ className }: { className?: string }) {
         </h1>
 
         <div className="flex gap-2">
-          <ButtonLink href="/profile">Profile</ButtonLink>
-          <ButtonLink href="/auth/login">Login</ButtonLink>
-          <ButtonLink href="/auth/signup">Sign Up</ButtonLink>
+          {ctx.cookie.userId.value ? (
+            <>
+              <ButtonLink href={`/user/${ctx.cookie.userId.value}`}>
+                Profile
+              </ButtonLink>
+              <form action="/api/auth/logout" method="POST">
+                <FormButton type="submit">Logout</FormButton>
+              </form>
+            </>
+          ) : (
+            <>
+              <ButtonLink href="/auth/login">Login</ButtonLink>
+              <ButtonLink href="/auth/signup">Sign Up</ButtonLink>
+            </>
+          )}
         </div>
       </div>
     </div>

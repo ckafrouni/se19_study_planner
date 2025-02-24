@@ -6,13 +6,13 @@ export default async function Page({
   params: { userId: any };
 }) {
   if (!userId) {
-    return new Response("Unauthorized", { status: 401 });
+    throw new Response("Unauthorized", { status: 401 });
   }
 
   const user = await UserDAL.findById(Number(userId));
 
   if (!user) {
-    return new Response("Not found", { status: 404 });
+    throw new Response("Not found", { status: 404 });
   }
 
   return (

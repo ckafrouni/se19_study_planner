@@ -8,12 +8,27 @@ import LiveReloadScript from "./components/LiveReloadScript";
 function Layouts({
   children,
   layouts,
+  query,
+  params,
+  ctx,
 }: {
   children: ReactElement;
-  layouts: ((props: { children: ReactElement }) => ReactElement)[];
+  layouts: ((props: {
+    children: ReactElement;
+    ctx: Context;
+    query: Record<string, string>;
+    params: Record<string, string>;
+  }) => ReactElement)[];
+  query: Record<string, string>;
+  params: Record<string, string>;
+  ctx: Context;
 }) {
   return layouts.reduceRight(
-    (wrapped, Layout) => <Layout>{wrapped}</Layout>,
+    (wrapped, Layout) => (
+      <Layout query={query} params={params} ctx={ctx}>
+        {wrapped}
+      </Layout>
+    ),
     children
   );
 }
@@ -29,7 +44,12 @@ function pageRouter({
   router: Elysia;
   fullPath: string;
   url: string;
-  currentLayouts: ((props: { children: ReactElement }) => ReactElement)[];
+  currentLayouts: ((props: {
+    children: ReactElement;
+    ctx: Context;
+    query: Record<string, string>;
+    params: Record<string, string>;
+  }) => ReactElement)[];
 }) {
   const Page = require(fullPath).default;
 
@@ -37,7 +57,12 @@ function pageRouter({
     console.log("Page Handler");
     console.log(ctx.cookie);
     const stream = await renderToReadableStream(
-      <Layouts layouts={currentLayouts}>
+      <Layouts
+        query={ctx.query}
+        params={ctx.params}
+        ctx={ctx}
+        layouts={currentLayouts}
+      >
         <>
           <Page query={ctx.query} params={ctx.params} ctx={ctx} />
           {dev && <LiveReloadScript />}

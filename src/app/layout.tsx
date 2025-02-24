@@ -1,7 +1,15 @@
+import { Context } from "elysia";
+
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
-export default function RootLayout({ children }: { children: JSX.Element }) {
+export default function RootLayout({
+  children,
+  ctx,
+}: {
+  children: JSX.Element;
+  ctx: Context;
+}) {
   return (
     <html lang="en">
       <head>
@@ -14,7 +22,7 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           "absolute w-full h-screen flex flex-col justify-between pt-16"
         }
       >
-        <Navbar className="fixed top-0" />
+        <Navbar ctx={ctx} className="fixed top-0" />
         {children}
         <Footer />
       </body>

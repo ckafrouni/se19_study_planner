@@ -2,22 +2,15 @@ import { UserDAL } from "@/db/dal/users";
 import { Context } from "elysia";
 
 export default async function ProfilePage({ ctx }: { ctx: Context }) {
-  console.log("Profile Page");
-  console.log(ctx.cookie);
-
   const userId = ctx.cookie["userId"].value;
   if (!userId) {
-    console.log("Unauthorized");
-    return new Response("Unauthorized", {
-      status: 401,
-      headers: { location: "/" },
-    });
+    throw ctx.redirect("/auth/login");
   }
 
   const user = await UserDAL.findById(Number(userId));
 
   if (!user) {
-    return new Response("Not found", { status: 404 });
+    throw new Response("Not found", { status: 404 });
   }
 
   return (
