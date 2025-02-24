@@ -138,6 +138,7 @@ const start_command = () => {
 };
 
 const dev_command = ({ appDir, dev }: { appDir: string; dev: boolean }) => {
+  console.log(`appdir: ${appDir}, dev: ${dev}`);
   startLiveReloadWebSocketServer();
   runTailwind(true);
   runServer({ dev });
@@ -158,14 +159,15 @@ const main = async () => {
   }
 
   const ROOT_DIR = process.cwd();
-  const APP_DIR = path.join(ROOT_DIR, "src", "app");
+  // const APP_DIR = path.join(ROOT_DIR, "src", "app");
+  const SRC_DIR = path.join(ROOT_DIR, "src");
 
   process.on("SIGINT", cleanup);
   process.on("SIGTERM", cleanup);
 
   switch (args[0]) {
     case "dev":
-      dev_command({ appDir: APP_DIR, dev: true });
+      dev_command({ appDir: SRC_DIR, dev: true });
       break;
     case "build":
       build_command();

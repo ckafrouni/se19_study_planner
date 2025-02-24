@@ -2,11 +2,11 @@ export default function Footer() {
   return (
     <footer className=" border-t border-gray-200 text-sm text-gray-500">
       <div className="container mx-auto flex items-center justify-between p-3 w-full">
-        <p>© 2024 Study Planner. All rights reserved.</p>
+        <p>2024 Study Planner.</p>
 
         <div className="flex gap-2">
           <a
-            href="https://elysiajs.org"
+            href="https://elysiajs.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
