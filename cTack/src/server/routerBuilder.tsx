@@ -1,20 +1,21 @@
 import { Elysia, Context, Handler } from "elysia";
 import { ReactElement } from "react";
-import { renderToString } from "react-dom/server";
-
-import InjectLiveReloadScript from "./components/InjectLiveReloadScript";
+import { renderToReadableStream, renderToString } from "react-dom/server";
 
 import { AppNode } from "./appBuilder";
+import LiveReloadScript from "./components/LiveReloadScript";
 
-function wrapWithLayouts(
-  Component: () => ReactElement,
-  layouts: ((props: { children: ReactElement }) => ReactElement)[]
-): () => ReactElement {
-  return () =>
-    layouts.reduceRight(
-      (wrapped, Layout) => <Layout>{wrapped}</Layout>,
-      <Component />
-    );
+function Layouts({
+  children,
+  layouts,
+}: {
+  children: ReactElement;
+  layouts: ((props: { children: ReactElement }) => ReactElement)[];
+}) {
+  return layouts.reduceRight(
+    (wrapped, Layout) => <Layout>{wrapped}</Layout>,
+    children
+  );
 }
 
 function pageRouter({
@@ -31,15 +32,22 @@ function pageRouter({
   currentLayouts: ((props: { children: ReactElement }) => ReactElement)[];
 }) {
   const Page = require(fullPath).default;
-  return router.get(url, ({ query, params }: Context) => {
-    const pageComponent = () => <Page params={params} query={query} />;
-    return renderToString(
-      dev
-        ? InjectLiveReloadScript(
-            wrapWithLayouts(pageComponent, currentLayouts)
-          )()
-        : wrapWithLayouts(pageComponent, currentLayouts)()
+
+  return router.get(url, async ({ query, params }: Context) => {
+    const stream = await renderToReadableStream(
+      <Layouts layouts={currentLayouts}>
+        <>
+          <Page query={query} params={params} />
+          {dev && <LiveReloadScript />}
+        </>
+      </Layouts>
     );
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/html",
+      },
+    });
   });
 }
 
