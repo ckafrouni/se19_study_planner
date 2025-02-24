@@ -11,6 +11,7 @@ export default function Navbar({ className }: { className?: string }) {
         </h1>
 
         <div className="flex gap-2">
+          <ButtonLink href="/profile">Profile</ButtonLink>
           <ButtonLink href="/auth/login">Login</ButtonLink>
           <ButtonLink href="/auth/signup">Sign Up</ButtonLink>
         </div>

@@ -33,11 +33,13 @@ function pageRouter({
 }) {
   const Page = require(fullPath).default;
 
-  return router.get(url, async ({ query, params }: Context) => {
+  return router.get(url, async (ctx: Context) => {
+    console.log("Page Handler");
+    console.log(ctx.cookie);
     const stream = await renderToReadableStream(
       <Layouts layouts={currentLayouts}>
         <>
-          <Page query={query} params={params} />
+          <Page query={ctx.query} params={ctx.params} ctx={ctx} />
           {dev && <LiveReloadScript />}
         </>
       </Layouts>
