@@ -2,5 +2,6 @@ import { Context } from "elysia";
 
 export async function POST({ cookie, redirect }: Context) {
   delete cookie["userId"];
-  redirect("/");
+  console.log(cookie);
+  return redirect("/");
 }

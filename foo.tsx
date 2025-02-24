@@ -2,7 +2,7 @@ import Elysia, { Context } from "elysia";
 import { renderToReadableStream } from "react-dom/server";
 
 const Main = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // returns the user
+  // await new Promise((resolve) => setTimeout(resolve, 2000)); // returns the user
 
   return (
     <div>
@@ -24,16 +24,28 @@ const App = () => {
   );
 };
 
-const app = new Elysia().get("/", async ({ set, headers }: Context) => {
-  console.log(headers);
-  set.headers["content-type"] = "text/html";
+async function pageHandler(ctx: Context) {
+  ctx.set.headers["content-type"] = "text/html";
   const stream = await renderToReadableStream(<App />);
   return new Response(stream, {
     headers: {
       "content-type": "text/html",
     },
   });
-});
+}
+
+async function apiHandler(ctx: Context) {
+  return new Response(JSON.stringify({ message: "Hello World!" }), {
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+}
+
+const app = new Elysia()
+  .get("/", async (ctx: Context) => pageHandler(ctx))
+  .get("/api", async (ctx: Context) => apiHandler(ctx))
+  .get("/redirect-root", async (ctx: Context) => ctx.redirect("/"));
 
 app
   .onStart(() => {

@@ -19,5 +19,5 @@ export async function POST({ body, set, redirect, cookie }: Context) {
 
   cookie["userId"].value = user.id.toString();
   cookie["userId"].maxAge = 7 * 24 * 60 * 60; // 7 days
-  redirect(`/user/${user.id}`);
+  return redirect(`/user/${user.id}`);
 }

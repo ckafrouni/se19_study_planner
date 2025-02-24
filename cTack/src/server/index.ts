@@ -16,7 +16,7 @@ const APP_DIR = path.join(ROOT_DIR, "src", "app");
 
 export function generateRouter(dir: string): Elysia {
   const appStructure = buildAppStructure(dir);
-  console.log(JSON.stringify(appStructure, null, 2));
+  // console.log(JSON.stringify(appStructure, null, 2));
   return routerReducer(new Elysia(), appStructure);
 }
 

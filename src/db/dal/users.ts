@@ -10,12 +10,10 @@ export interface CreateUserInput {
 }
 
 export class UserDAL {
-  // Hash the password using SHA-256
   private static hashPassword(password: string): string {
     return createHash("sha256").update(password).digest("hex");
   }
 
-  // Create a new user
   static async createUser(input: CreateUserInput) {
     const hashedPassword = this.hashPassword(input.password);
 
@@ -40,19 +38,16 @@ export class UserDAL {
     }
   }
 
-  // Find user by email
   static async findByEmail(email: string) {
     const [user] = await db.select().from(users).where(eq(users.email, email));
     return user;
   }
 
-  // Find user by ID
   static async findById(id: number) {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
-  // Verify password
   static async verifyPassword(
     email: string,
     password: string
