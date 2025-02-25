@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="relative w-full">
           <Navbar ctx={ctx} className="fixed top-0 z-50" />
 
-          <div className="flex min-h-screen flex-col justify-between pt-16">
+          <div className="flex min-h-dvh flex-col justify-between pt-16">
             <div className="grid grow">{children}</div>
             <Footer />
           </div>
