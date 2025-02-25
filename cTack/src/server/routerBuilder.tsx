@@ -54,8 +54,7 @@ function pageRouter({
   const Page = require(fullPath).default;
 
   return router.get(url, async (ctx: Context) => {
-    console.log("Page Handler");
-    console.log(ctx.cookie);
+    ctx.cookie; // Makes sure cookies are accessible
     const stream = await renderToReadableStream(
       <Layouts
         query={ctx.query}
@@ -119,7 +118,6 @@ export function routerReducer(
         ) ?? router
       );
     case "page":
-      const Page = require(fullPath).default;
       return pageRouter({
         dev: process.env.NODE_ENV !== "production",
         router,

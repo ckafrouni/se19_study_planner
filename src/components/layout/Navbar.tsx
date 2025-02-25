@@ -26,7 +26,12 @@ export default function Navbar({
                 Profile
               </ButtonLink>
               <form action="/api/auth/logout" method="POST">
-                <FormButton type="submit">Logout</FormButton>
+                <FormButton
+                  className="hover:bg-red-600 bg-red-500 text-white"
+                  type="submit"
+                >
+                  Logout
+                </FormButton>
               </form>
             </>
           ) : (
