@@ -1,19 +1,22 @@
-import { Context } from "elysia";
+import { ButtonLink } from "@/components/ui/button";
 
-export default function HomePage({
-  ctx,
-  query: { friend, enemy },
-}: {
-  ctx: Context;
-  query: { friend: string; enemy: string };
-}) {
+export default function HomePage() {
   return (
-    <div className="w-full p-3">
-      <div className="container mx-auto">
-        <h1>Home Page</h1>
-        <p>Friend: {friend}</p>
-        <p>Enemy: {enemy}</p>
+    <main className="container mx-auto grid w-full h-full place-items-center">
+      <div className="flex flex-col items-center justify-center p-3 gap-2">
+        <h1 className="xl:text-5xl lg:text-5xl md:text-4xl sm:text-3xl text-2xl font-bold">
+          Code Study Planner
+        </h1>
+        <p className="xl:text-lg lg:text-lg md:text-base sm:text-sm text-xs">
+          Plan your study schedule
+        </p>
+        <ButtonLink
+          className="bg-neutral-800 hover:bg-neutral-900 text-white"
+          href="/auth/login"
+        >
+          Get Started
+        </ButtonLink>
       </div>
-    </div>
+    </main>
   );
 }
