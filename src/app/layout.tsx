@@ -1,14 +1,14 @@
-import { Context } from "elysia";
+import { Context } from 'elysia'
 
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
+import Footer from '@/components/layout/Footer'
+import Navbar from '@/components/layout/Navbar'
 
 export default function RootLayout({
   children,
   ctx,
 }: {
-  children: JSX.Element;
-  ctx: Context;
+  children: JSX.Element
+  ctx: Context
 }) {
   return (
     <html lang="en">
@@ -23,12 +23,12 @@ export default function RootLayout({
         <div className="relative w-full">
           <Navbar ctx={ctx} className="fixed top-0 z-50" />
 
-          <div className="flex flex-col justify-between min-h-screen pt-16">
+          <div className="flex min-h-screen flex-col justify-between pt-16">
             <div className="grid grow">{children}</div>
             <Footer />
           </div>
         </div>
       </body>
     </html>
-  );
+  )
 }

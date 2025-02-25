@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 export function Form({
   action,
@@ -6,10 +6,10 @@ export function Form({
   children,
   onSubmit,
 }: {
-  action: string;
-  method: string;
-  children: React.ReactNode;
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  action: string
+  method: string
+  children: React.ReactNode
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void
 }) {
   return (
     <form
@@ -20,11 +20,11 @@ export function Form({
     >
       {children}
     </form>
-  );
+  )
 }
 
 export function FormFieldGroup({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-md -space-y-px">{children}</div>;
+  return <div className="-space-y-px rounded-md">{children}</div>
 }
 
 export function FormField({
@@ -32,45 +32,23 @@ export function FormField({
   type,
   placeholder,
   required = false,
-  className = "",
+  className = '',
 }: {
-  name: string;
-  type: string;
-  placeholder: string;
-  required?: boolean;
-  className?: string;
+  name: string
+  type: string
+  placeholder: string
+  required?: boolean
+  className?: string
 }) {
   return (
     <input
       name={name}
       type={type}
       required={required}
-      className={`
-        form-field
-
-        appearance-none 
-        relative 
-        block 
-        w-full 
-        px-3 
-        py-2
-
-        border 
-        border-neutral-300 
-        placeholder-neutral-500 
-        text-neutral-900 
-
-        focus:outline-none
-        focus:border-neutral-500
-        focus:z-10 
-
-        sm:text-sm 
-        first-of-type:rounded-t-lg 
-        last-of-type:rounded-b-lg 
-        ${className}`}
+      className={`form-field relative block w-full appearance-none border border-neutral-300 px-3 py-2 text-neutral-900 placeholder-neutral-500 first-of-type:rounded-t-lg last-of-type:rounded-b-lg focus:z-10 focus:border-neutral-500 focus:outline-none sm:text-sm ${className}`}
       placeholder={placeholder}
     />
-  );
+  )
 }
 
 export function FormButton({
@@ -78,16 +56,16 @@ export function FormButton({
   className,
   type,
 }: {
-  children: ReactNode;
-  className?: string;
-  type?: "submit" | "reset" | "button";
+  children: ReactNode
+  className?: string
+  type?: 'submit' | 'reset' | 'button'
 }) {
   return (
     <button
       type={type}
-      className={`text-xs md:text-base cursor-pointer rounded-lg hover:bg-neutral-100 px-3 py-2 ${className}`}
+      className={`cursor-pointer rounded-lg px-3 py-2 text-xs hover:bg-neutral-100 md:text-base ${className}`}
     >
       {children}
     </button>
-  );
+  )
 }

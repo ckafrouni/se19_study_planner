@@ -1,9 +1,9 @@
 export default function Footer({ className }: { className?: string }) {
   return (
     <footer
-      className={`bg-white border-t border-gray-200 text-sm text-gray-500 ${className}`}
+      className={`border-t border-gray-200 bg-white text-sm text-gray-500 ${className}`}
     >
-      <div className="container mx-auto flex items-center justify-between p-3 w-full">
+      <div className="container mx-auto flex w-full items-center justify-between p-3">
         <p className="text-xs text-gray-500">2024 Study Planner.</p>
 
         <div className="flex gap-2">
@@ -15,7 +15,7 @@ export default function Footer({ className }: { className?: string }) {
             <img
               width={24}
               height={24}
-              className="w-6 h-6"
+              className="h-6 w-6"
               src="/public/icons/ElysiaJS.png"
               alt="ElysiaJS"
             />
@@ -29,7 +29,7 @@ export default function Footer({ className }: { className?: string }) {
             <img
               width={24}
               height={24}
-              className="w-6 h-6"
+              className="h-6 w-6"
               src="/public/icons/GitHub.png"
               alt="GitHub"
             />
@@ -37,5 +37,5 @@ export default function Footer({ className }: { className?: string }) {
         </div>
       </div>
     </footer>
-  );
+  )
 }

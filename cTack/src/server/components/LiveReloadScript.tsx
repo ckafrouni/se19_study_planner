@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react'
 
 export default function LiveReloadScript() {
   return (
@@ -17,5 +17,5 @@ export default function LiveReloadScript() {
         `,
       }}
     ></script>
-  );
+  )
 }
