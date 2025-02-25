@@ -5,7 +5,9 @@ import {
   FormFieldGroup,
 } from '@/components/ui/form'
 
-export default () => {
+import { ERROR_TYPES } from '@/app/api/auth/signup/route'
+
+export default ({ query }: { query: Record<string, string> }) => {
   return (
     <div className="w-full max-w-md space-y-8 place-self-center rounded-lg p-8">
       <div>
@@ -40,6 +42,12 @@ export default () => {
           Sign in
         </a>
       </div>
+
+      {query?.error && (
+        <div className="text-center text-red-600">
+          {ERROR_TYPES[query.error as keyof typeof ERROR_TYPES]?.message}
+        </div>
+      )}
     </div>
   )
 }

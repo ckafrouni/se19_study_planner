@@ -1,4 +1,4 @@
-import { UserDAL } from '@/db/dal/users'
+import { authDal } from '@/db'
 import { Context } from 'elysia'
 
 export default async function Page({
@@ -8,14 +8,16 @@ export default async function Page({
   ctx: Context
   params: { userId: any }
 }) {
-  if (!userId || cookie.userId.value !== userId) {
+  const sessionToken = cookie.sessionToken.value
+  console.log(sessionToken)
+  if (!userId || !sessionToken) {
     throw redirect('/auth/login')
   }
 
-  const user = await UserDAL.findById(Number(userId))
+  const session = await authDal.getSessionByToken(sessionToken)
 
-  if (!user) {
-    throw new Response('Not found', { status: 404 })
+  if (!session) {
+    throw redirect('/auth/login')
   }
 
   return (
@@ -38,7 +40,7 @@ export default async function Page({
                     Full name
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                    {user.name}
+                    {session.user.name}
                   </dd>
                 </div>
                 <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -46,7 +48,7 @@ export default async function Page({
                     Email address
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                    {user.email}
+                    {session.user.email}
                   </dd>
                 </div>
                 <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -54,7 +56,7 @@ export default async function Page({
                     Member since
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                    {new Date(user.createdAt).toLocaleDateString()}
+                    {new Date(session.user.createdAt).toLocaleDateString()}
                   </dd>
                 </div>
               </dl>

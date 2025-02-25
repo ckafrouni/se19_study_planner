@@ -10,6 +10,9 @@ export default function Navbar({
   className?: string
   ctx: Context
 }) {
+  const user = JSON.parse(ctx.cookie['user']?.value || 'null')
+  console.log(user)
+
   return (
     <div
       className={`h-16 w-full border-b border-gray-200 bg-white p-3 text-sm ${className}`}
@@ -20,11 +23,9 @@ export default function Navbar({
         </h1>
 
         <div className="flex gap-2">
-          {ctx.cookie.userId.value ? (
+          {user ? (
             <>
-              <ButtonLink href={`/user/${ctx.cookie.userId.value}`}>
-                Profile
-              </ButtonLink>
+              <ButtonLink href={`/user/${user.id}`}>Profile</ButtonLink>
               <form action="/api/auth/logout" method="POST">
                 <FormButton
                   className="bg-red-500 text-white hover:bg-red-600"
