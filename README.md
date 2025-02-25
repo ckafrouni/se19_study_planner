@@ -4,6 +4,8 @@
 
 cTack is a lightweight, high-performance drop-in replacement for Next.js that leverages React's latest server component features. Built for developers who want to dive deep into the mechanics that drive Next.js.
 
+The server is built using [Elysia](https://elysiajs.com), a lightweight, high-performance framework.
+
 ### Key Features
 
 - **Complete Server Components Support**: Every component is server-rendered using React's latest server component architecture
