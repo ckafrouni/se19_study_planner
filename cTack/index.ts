@@ -21,7 +21,7 @@ const runTailwind = (watch = false) => {
     '-i',
     './src/app/styles.css',
     '-o',
-    './public/style.css',
+    './public/styles.css',
   ]
   if (watch) command.push('--watch')
 
