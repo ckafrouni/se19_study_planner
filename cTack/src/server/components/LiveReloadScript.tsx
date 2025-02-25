@@ -13,10 +13,6 @@ export default function LiveReloadScript() {
               window.location.reload();
             }
           };
-          socket.onclose = function () {
-            console.log("Live reload disconnected. Attempting to reconnect...");
-            setTimeout(() => window.location.reload(), 1000);
-          };
         })();
         `,
       }}

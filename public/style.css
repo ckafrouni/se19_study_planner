@@ -518,9 +518,6 @@
   }
 }
 @layer utilities {
-  .absolute {
-    position: absolute;
-  }
   .fixed {
     position: fixed;
   }
@@ -532,6 +529,9 @@
   }
   .top-0 {
     top: calc(var(--spacing) * 0);
+  }
+  .z-50 {
+    z-index: 50;
   }
   .container {
     width: 100%;
@@ -572,6 +572,9 @@
   .flex {
     display: flex;
   }
+  .grid {
+    display: grid;
+  }
   .inline-flex {
     display: inline-flex;
   }
@@ -580,9 +583,6 @@
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
-  }
-  .h-screen {
-    height: 100vh;
   }
   .min-h-screen {
     min-height: 100vh;
@@ -601,6 +601,9 @@
   }
   .max-w-md {
     max-width: var(--container-md);
+  }
+  .grow {
+    flex-grow: 1;
   }
   .cursor-pointer {
     cursor: pointer;
@@ -644,6 +647,9 @@
       margin-block-end: calc(calc(var(--spacing) * 8) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .place-self-center {
+    place-self: center;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -685,20 +691,14 @@
   .border-transparent {
     border-color: transparent;
   }
-  .bg-amber-300 {
-    background-color: var(--color-amber-300);
-  }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
-  .bg-indigo-600 {
-    background-color: var(--color-indigo-600);
-  }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
+  .bg-neutral-800 {
+    background-color: var(--color-neutral-800);
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
@@ -752,6 +752,14 @@
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
   }
+  .text-xl {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+  .text-xs {
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
   .leading-6 {
     --tw-leading: calc(var(--spacing) * 6);
     line-height: calc(var(--spacing) * 6);
@@ -770,8 +778,8 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
-  .text-indigo-600 {
-    color: var(--color-indigo-600);
+  .text-neutral-600 {
+    color: var(--color-neutral-600);
   }
   .text-white {
     color: var(--color-white);
@@ -785,24 +793,20 @@
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .shadow-sm {
-    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .hover\:bg-black {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-black);
+      }
+    }
   }
   .hover\:bg-gray-100 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-100);
-      }
-    }
-  }
-  .hover\:bg-indigo-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-indigo-700);
       }
     }
   }
@@ -813,10 +817,10 @@
       }
     }
   }
-  .hover\:text-indigo-500 {
+  .hover\:text-neutral-500 {
     &:hover {
       @media (hover: hover) {
-        color: var(--color-indigo-500);
+        color: var(--color-neutral-500);
       }
     }
   }
@@ -825,9 +829,9 @@
       z-index: 10;
     }
   }
-  .focus\:border-indigo-500 {
+  .focus\:border-neutral-500 {
     &:focus {
-      border-color: var(--color-indigo-500);
+      border-color: var(--color-neutral-500);
     }
   }
   .focus\:ring-2 {
@@ -836,9 +840,9 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
-  .focus\:ring-indigo-500 {
+  .focus\:ring-neutral-500 {
     &:focus {
-      --tw-ring-color: var(--color-indigo-500);
+      --tw-ring-color: var(--color-neutral-500);
     }
   }
   .focus\:ring-red-500 {

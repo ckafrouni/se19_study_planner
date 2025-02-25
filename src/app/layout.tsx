@@ -13,18 +13,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>SE19 Study Planner</title>
         <link rel="stylesheet" href="/public/style.css" />
         <link rel="shortcut icon" href="/public/favicon.png" type="image/png" />
       </head>
-      <body
-        className={
-          "absolute w-full h-screen flex flex-col justify-between pt-16"
-        }
-      >
-        <Navbar ctx={ctx} className="fixed top-0" />
-        {children}
-        <Footer />
+      <body>
+        <div className="relative w-full">
+          <Navbar ctx={ctx} className="fixed top-0 z-50" />
+
+          <div className="flex flex-col justify-between min-h-screen pt-16">
+            <div className="grid grow">{children}</div>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );
