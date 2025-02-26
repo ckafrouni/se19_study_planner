@@ -8,6 +8,9 @@ import { spawnSync, spawn, ChildProcess } from 'child_process'
 import path from 'path'
 import { watch, FSWatcher } from 'fs'
 import { WebSocket, WebSocketServer } from 'ws'
+import { config } from 'dotenv'
+
+config({ path: '.env' })
 
 let serverProcess: ChildProcess | null = null
 let tailwindProcess: ChildProcess | null = null
@@ -80,7 +83,7 @@ const watchFiles = ({ dir }: { dir: string }) => {
   console.log(`🦊 \x1b[1;30mWatching for file changes\x1b[0m`)
 
   fileWatcher = watch(dir, { recursive: true }, (eventType, filename) => {
-    if (filename) {
+    if (filename && !filename.endsWith('.db')) {
       console.log(`🦊 \x1b[1;30mFile ${filename} has been ${eventType}\x1b[0m`)
       runServer({ dev: true })
     }

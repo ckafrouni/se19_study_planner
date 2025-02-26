@@ -20,3 +20,21 @@ The server is built using [Elysia](https://elysiajs.com), a lightweight, high-pe
 - Data fetching methods
 
 Get started with cTack today for a modern, efficient React development experience.
+
+### Setup local development environment
+
+```bash
+# install dependencies
+bun install
+
+# optional if using a local database
+bun run local:db:pull # pull the dump from the turso database
+bun run local:db:apply # apply the dump to the local database
+
+# start the development server
+bun run dev
+```
+
+The local database is stored in `src/db/local.db` and can be created by applying the dump from the turso database in `src/db/dump.sql`.
+
+Alternatively, you can use a remote turso (libsql/sqlite) database by setting the `TURSO_CONNECTION_URL` and `TURSO_AUTH_TOKEN` environment variables.
