@@ -1,6 +1,6 @@
 import { Elysia, Context, Handler } from 'elysia'
 import { ReactElement } from 'react'
-import { renderToReadableStream, renderToString } from 'react-dom/server'
+import { renderToReadableStream } from 'react-dom/server'
 
 import { AppNode } from './appBuilder'
 import LiveReloadScript from './components/LiveReloadScript'
@@ -39,6 +39,7 @@ function pageRouter({
   fullPath,
   url,
   currentLayouts,
+  ip,
 }: {
   dev: boolean
   router: Elysia
@@ -50,6 +51,7 @@ function pageRouter({
     query: Record<string, string>
     params: Record<string, string>
   }) => ReactElement)[]
+  ip: string
 }) {
   const Page = require(fullPath).default
 
@@ -64,7 +66,7 @@ function pageRouter({
       >
         <>
           <Page query={ctx.query} params={ctx.params} ctx={ctx} />
-          {dev && <LiveReloadScript />}
+          {dev && <LiveReloadScript ip={ip} />}
         </>
       </Layouts>
     )
@@ -104,7 +106,8 @@ function routeRouter({
 export function routerReducer(
   router: Elysia,
   { type, name, fullPath, url, children, routes, layout }: AppNode,
-  layouts: ((props: { children: ReactElement }) => ReactElement)[] = []
+  layouts: ((props: { children: ReactElement }) => ReactElement)[] = [],
+  ip: string
 ): Elysia {
   const currentLayouts = layout ? [...layouts, layout] : layouts
 
@@ -113,7 +116,7 @@ export function routerReducer(
     case 'group':
       return (
         children?.reduce(
-          (r, child) => routerReducer(r, child, currentLayouts),
+          (r, child) => routerReducer(r, child, currentLayouts, ip),
           router
         ) ?? router
       )
@@ -124,6 +127,7 @@ export function routerReducer(
         fullPath,
         url,
         currentLayouts,
+        ip,
       })
     case 'route':
       return routeRouter({

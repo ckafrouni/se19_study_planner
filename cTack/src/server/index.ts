@@ -17,27 +17,38 @@ const APP_DIR = path.join(ROOT_DIR, 'src', 'app')
 
 // Function to get the local IP address
 function getLocalIpAddress() {
-  const networks = networkInterfaces();
+  const networks = networkInterfaces()
   for (const name of Object.keys(networks)) {
     for (const net of networks[name] || []) {
       // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
       if (net.family === 'IPv4' && !net.internal) {
-        return net.address;
+        return net.address
       }
     }
   }
-  return '0.0.0.0'; // Fallback
+  return '0.0.0.0' // Fallback
 }
 
-export function generateRouter(dir: string): Elysia {
+export function generateRouter({
+  dir,
+  ip,
+}: {
+  dir: string
+  ip: string
+}): Elysia {
   const appStructure = buildAppStructure(dir)
   // console.log(JSON.stringify(appStructure, null, 2));
-  return routerReducer(new Elysia(), appStructure)
+  return routerReducer(new Elysia(), appStructure, [], ip)
 }
 
-const appRouter = generateRouter(APP_DIR)
-
 // MARK: - App
+
+const localIpAddress = getLocalIpAddress()
+
+const appRouter = generateRouter({
+  dir: APP_DIR,
+  ip: localIpAddress,
+})
 
 const app = new Elysia()
   .use(html({ autoDetect: true }))
@@ -50,13 +61,17 @@ const app = new Elysia()
   )
   .use(swagger({ path: '/swagger' }))
   .onStart((app) => {
-    const port = app.server?.port || 3000;
-    const hostname = app.server?.hostname || 'localhost';
-    const localUrl = `http://${hostname}:${port}`;
-    const localIpUrl = `http://${getLocalIpAddress()}:${port}`;
-    
-    console.log(`🦊 \x1b[1;33mcTack\x1b[0m is running at \x1b[1;34m${localUrl}\x1b[0m`);
-    console.log(`📡 Available on your network at \x1b[1;34m${localIpUrl}\x1b[0m`);
+    const port = app.server?.port || 3000
+    const hostname = app.server?.hostname || 'localhost'
+    const localUrl = `http://${hostname}:${port}`
+    const localIpUrl = `http://${getLocalIpAddress()}:${port}`
+
+    console.log(
+      `🦊 \x1b[1;33mcTack\x1b[0m is running at \x1b[1;34m${localUrl}\x1b[0m`
+    )
+    console.log(
+      `📡 Available on your network at \x1b[1;34m${localIpUrl}\x1b[0m`
+    )
   })
 
 app.listen(3000)

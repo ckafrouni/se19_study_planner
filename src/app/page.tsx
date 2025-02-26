@@ -7,7 +7,7 @@ export default function HomePage() {
         <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl">
           Code Study Planner
         </h1>
-        <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-lg">
+        <p className="text-sm sm:text-sm md:text-base lg:text-lg xl:text-lg">
           Plan your study schedule
         </p>
         <ButtonLink
