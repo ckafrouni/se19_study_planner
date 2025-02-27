@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bun run ../prev/index.ts dev",
+    "build": "bun run ../prev/index.ts build",
+    "start": "bun run ../prev/index.ts start",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:turso:dump": "turso db shell drizzle-turso-db .dump > src/db/dump.sql && cat src/db/dump.sql | sqlite3 local.db"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@t3-oss/env-core": "^0.12.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.3",
+    "prev": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.7",
+    "@types/bcrypt": "^5.0.2",
+    "drizzle-kit": "^0.30.4",
+    "tailwindcss": "^4.0.7"
+  }
+}

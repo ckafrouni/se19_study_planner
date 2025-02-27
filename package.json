@@ -1,38 +1,18 @@
 {
   "name": "se19_study_planner",
   "version": "1.0.50",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "bun run prev dev",
-    "build": "bun run prev build",
-    "start": "bun run prev start",
-    "format": "prettier --write .",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:turso:dump": "turso db shell drizzle-turso-db .dump > src/db/dump.sql && cat src/db/dump.sql | sqlite3 local.db"
-  },
-  "dependencies": {
-    "@elysiajs/html": "^1.2.0",
-    "@elysiajs/static": "^1.2.0",
-    "@elysiajs/swagger": "^1.2.1",
-    "@libsql/client": "^0.14.0",
-    "@t3-oss/env-core": "^0.12.0",
-    "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.39.3",
-    "elysia": "latest",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "zod": "^3.24.2"
+    "dev": "bun run --cwd packages/app dev",
+    "build": "bun run --cwd packages/app build",
+    "start": "bun run --cwd packages/app start",
+    "format": "prettier --write ."
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.7",
-    "@types/bcrypt": "^5.0.2",
-    "@types/react-dom": "^19.0.4",
-    "bun-types": "latest",
-    "drizzle-kit": "^0.30.4",
     "prettier": "^3.5.2",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.7"
-  },
-  "module": "prev"
+    "prettier-plugin-tailwindcss": "^0.6.11"
+  }
 }

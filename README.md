@@ -1,40 +1,55 @@
-# prev
+# SE19 Study Planner Monorepo
 
-## Modern React Server Components / Next.js-like Framework
+This is a monorepo for the SE19 Study Planner project, organized with Bun workspaces.
 
-prev is a lightweight, high-performance drop-in replacement for Next.js that leverages React's latest server component features. Built for developers who want to dive deep into the mechanics that drive Next.js.
+## Repository Structure
 
-The server is built using [Elysia](https://elysiajs.com), a lightweight, high-performance framework.
+- `packages/prev`: A lightweight, high-performance drop-in replacement for Next.js that leverages React's latest server component features
+- `packages/app`: The actual Study Planner application built using the prev framework
 
-### Key Features
-
-- **Complete Server Components Support**: Every component is server-rendered using React's latest server component architecture
-- **Next.js API Compatibility**: Designed as a seamless replacement for Next.js projects
-
-### Supported Next.js Features
-
-- File-based routing
-- APP Router
-- Server-side rendering
-- Static folder serving
-- Data fetching methods
-
-Get started with prev today for a modern, efficient React development experience.
-
-### Setup local development environment
+## Getting Started
 
 ```bash
-# install dependencies
+# Install dependencies for all packages
 bun install
 
-# optional if using a local database
-bun run local:db:pull # pull the dump from the turso database
-bun run local:db:apply # apply the dump to the local database
-
-# start the development server
+# Start the development server
 bun run dev
+
+# Build the application
+bun run build
+
+# Start the production server
+bun run start
 ```
 
-The local database is stored in `src/db/local.db` and can be created by applying the dump from the turso database in `src/db/dump.sql`.
+## Package-specific Commands
 
-Alternatively, you can use a remote turso (libsql/sqlite) database by setting the `TURSO_CONNECTION_URL` and `TURSO_AUTH_TOKEN` environment variables.
+### prev
+
+```bash
+# Run commands in the prev package
+bun run --cwd packages/prev dev
+bun run --cwd packages/prev build
+bun run --cwd packages/prev start
+```
+
+### app
+
+```bash
+# Run commands in the app package
+bun run --cwd packages/app dev
+bun run --cwd packages/app build
+bun run --cwd packages/app start
+
+# Database commands
+bun run --cwd packages/app db:generate
+bun run --cwd packages/app db:migrate
+bun run --cwd packages/app db:turso:dump
+```
+
+## Database
+
+The local database is stored in `packages/app/local.db` and can be created by applying the dump from the turso database in `packages/app/src/db/dump.sql`.
+
+Alternatively, you can use a remote turso (libsql/sqlite) database by setting the `TURSO_CONNECTION_URL` and `TURSO_AUTH_TOKEN` environment variables in the `.env` file.

@@ -13,13 +13,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "prev": ["./packages/prev"],
-      "app": ["./packages/app"]
-    }
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [],
-  "exclude": ["node_modules"],
-  "references": [{ "path": "./packages/prev" }, { "path": "./packages/app" }]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

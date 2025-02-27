@@ -1,0 +1,23 @@
+{
+  "name": "prev",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "module": "index.ts",
+  "scripts": {
+    "dev": "bun run index.ts dev",
+    "build": "bun run index.ts build",
+    "start": "bun run index.ts start"
+  },
+  "dependencies": {
+    "@elysiajs/html": "^1.2.0",
+    "@elysiajs/static": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.1",
+    "elysia": "latest",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^19.0.4",
+    "bun-types": "latest"
+  }
+}

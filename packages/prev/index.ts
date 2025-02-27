@@ -22,9 +22,9 @@ const runTailwind = (watch = false) => {
     'bunx',
     'tailwindcss',
     '-i',
-    './src/app/styles.css',
+    '../app/src/app/styles.css',
     '-o',
-    './public/styles.css',
+    '../app/public/styles.css',
   ]
   if (watch) command.push('--watch')
 
@@ -50,8 +50,8 @@ const runServer = ({ dev = false }: { dev: boolean }) => {
     console.log(`🦊 \x1b[1;30mStarting server...\x1b[0m`)
   }
 
-  const command = ['bun', 'run', '--env']
-  command.push('prev/src/server')
+  const command = ['bun', 'run']
+  command.push(path.join(__dirname, 'src', 'server', 'index.ts'))
 
   serverProcess = spawn(command[0], command.slice(1), {
     stdio: 'inherit',
