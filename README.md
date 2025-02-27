@@ -1,8 +1,8 @@
-# cTack
+# prev
 
 ## Modern React Server Components / Next.js-like Framework
 
-cTack is a lightweight, high-performance drop-in replacement for Next.js that leverages React's latest server component features. Built for developers who want to dive deep into the mechanics that drive Next.js.
+prev is a lightweight, high-performance drop-in replacement for Next.js that leverages React's latest server component features. Built for developers who want to dive deep into the mechanics that drive Next.js.
 
 The server is built using [Elysia](https://elysiajs.com), a lightweight, high-performance framework.
 
@@ -19,7 +19,7 @@ The server is built using [Elysia](https://elysiajs.com), a lightweight, high-pe
 - Static folder serving
 - Data fetching methods
 
-Get started with cTack today for a modern, efficient React development experience.
+Get started with prev today for a modern, efficient React development experience.
 
 ### Setup local development environment
 

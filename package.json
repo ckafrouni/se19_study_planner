@@ -2,9 +2,9 @@
   "name": "se19_study_planner",
   "version": "1.0.50",
   "scripts": {
-    "dev": "bun run cTack dev",
-    "build": "bun run cTack build",
-    "start": "bun run cTack start",
+    "dev": "bun run prev dev",
+    "build": "bun run prev build",
+    "start": "bun run prev start",
     "format": "prettier --write .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -34,5 +34,5 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.7"
   },
-  "module": "cTack"
+  "module": "prev"
 }

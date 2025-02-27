@@ -1,5 +1,5 @@
 /**
- * cTack - A Nextjs-like CLI for developing web applications using Elysia and Bun.
+ * prev - A Nextjs-like CLI for developing web applications using Elysia and Bun.
  *
  * @author Christophe Kafrouni
  */
@@ -51,7 +51,7 @@ const runServer = ({ dev = false }: { dev: boolean }) => {
   }
 
   const command = ['bun', 'run', '--env']
-  command.push('cTack/src/server')
+  command.push('prev/src/server')
 
   serverProcess = spawn(command[0], command.slice(1), {
     stdio: 'inherit',
@@ -115,7 +115,7 @@ const cleanup = () => {
 
 const help_command = () => {
   console.log(`
-Usage: cTack <command>
+Usage: prev <command>
 
 Commands:
   dev           - Run the application in development mode

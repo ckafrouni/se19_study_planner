@@ -67,7 +67,7 @@ const app = new Elysia()
     const localIpUrl = `http://${getLocalIpAddress()}:${port}`
 
     console.log(
-      `🦊 \x1b[1;33mcTack\x1b[0m is running at \x1b[1;34m${localUrl}\x1b[0m`
+      `🦊 \x1b[1;33mprev\x1b[0m is running at \x1b[1;34m${localUrl}\x1b[0m`
     )
     console.log(
       `📡 Available on your network at \x1b[1;34m${localIpUrl}\x1b[0m`
