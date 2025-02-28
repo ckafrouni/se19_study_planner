@@ -1,7 +1,7 @@
 // ecosystem.config.js
 // https://pm2.keymetrics.io/
 
-export default {
+module.exports = {
   apps: [
     {
       name: 'se19_study_planner',
