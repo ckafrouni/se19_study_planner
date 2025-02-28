@@ -11,7 +11,6 @@ export default function Navbar({
   ctx: Context
 }) {
   const user = JSON.parse(ctx.cookie['user']?.value || 'null')
-  console.log(user)
 
   return (
     <div

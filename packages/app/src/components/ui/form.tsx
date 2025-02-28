@@ -5,15 +5,17 @@ export function Form({
   method,
   children,
   onSubmit,
+  className,
 }: {
   action: string
   method: string
   children: React.ReactNode
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void
+  className?: string
 }) {
   return (
     <form
-      className="mt-8 space-y-6"
+      className={`mt-8 space-y-6 ${className}`}
       action={action}
       method={method}
       onSubmit={onSubmit}
@@ -33,12 +35,16 @@ export function FormField({
   placeholder,
   required = false,
   className = '',
+  defaultValue,
+  value,
 }: {
   name: string
   type: string
   placeholder: string
   required?: boolean
   className?: string
+  defaultValue?: string
+  value?: string
 }) {
   return (
     <input
@@ -47,6 +53,8 @@ export function FormField({
       required={required}
       className={`form-field relative block w-full appearance-none border border-neutral-300 px-3 py-2 text-neutral-900 placeholder-neutral-500 first-of-type:rounded-t-lg last-of-type:rounded-b-lg focus:z-10 focus:border-neutral-500 focus:outline-none sm:text-sm ${className}`}
       placeholder={placeholder}
+      defaultValue={defaultValue}
+      value={value}
     />
   )
 }
