@@ -17,7 +17,7 @@ export default function Navbar({
       className={`h-16 w-full border-b border-gray-200 bg-white p-3 text-sm ${className}`}
     >
       <div className="container mx-auto flex items-center justify-between">
-        <h1 className="font-mono text-xl font-bold">
+        <h1 className="text-xl font-bold">
           <a href="/">Study Planner</a>
         </h1>
 
