@@ -5,8 +5,7 @@ module.exports = {
   apps: [
     {
       name: 'se19_study_planner',
-      script: 'bun',
-      args: 'run start',
+      script: 'bun run --cwd packages/app start',
       env: {
         NODE_ENV: 'production',
       },
