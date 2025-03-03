@@ -27,7 +27,7 @@ export default function Navbar({
           </h1>
         )}
 
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           {user ? (
             <>
               <ButtonLink href={`/user/${user.id}`}>Profile</ButtonLink>
