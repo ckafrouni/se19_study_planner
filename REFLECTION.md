@@ -1,0 +1,28 @@
+# Reflection - Prev
+
+There is a simple reason for me to have built all that framework just to have a TODO app.. I asked before starting this project if I should use Next.js, but the answer I got was obvious, SE_19's goal is to learn the basics, and Next.js skips all that, so you don't really need to worry about a router, rendering, server state management, etc.
+
+So the obvious choice (even though most people around me told me it was stupid) was to build my own framework, with the goal of seeing how much I understand about what these bigger frameworks do, discover and implement some new things I've never seen before, and figure out what I can still learn in the future.
+
+I will start slow, first things I wanted to learn correctly were:
+
+- Setting up a monorepo following best practices
+- Setting up framework-like repo without any framework
+  - Setting up TailwindCss
+  - Setting up DrizzleORM
+  - Setting up Prettier
+
+But the biggest learning curve by far was building my own file-based router (Prev). This alone is not that hard, I approached it as I would approach compiling a language. I start by generating a tree-like object from the folder structure, and then I reduce that tree into a router. I have experience with building compilers already so this was not new to me. However learning the Bun/Node file apis was not easy at all. I hit many bugs at that stage, for example I wanted to get the current working directly in my ts file, but every search would lead to using the global variable `__dirname`, which was not what I was looking for, I ended up after a lot of research to what seems obvious now, using `process.cwd()`.
+
+I am emphasizing this because I think the learning method changed quite a bit during this project. My approach initially was to use documentations and google searches only to build the project, but when it comes to a problem like the previous one, it was not helpful at all, and after a few prompts, I got the AI to show me `process.cwd()`. However at the same time I had to jump back to regular documentation when it came to Elysia, as it was pretty new, looks a lot like ExpressJs, but doesn't behave quite the same way. So AI would always give me pieces of code that looked correct, but only threw errors.
+
+Another focus of mine when starting this project was to learn about HMR, hot module reloading. The current version I have in my codebase is the only reliable one, but it is not exactly what I wanted. I implemented a file watcher within the main runner script that looks at the `app` folder structure, and restarts the server if something changes. This works, but it is slow. I have implemented a different version, that only reloads the route for which the changes occurred, which is much faster. However this worked unreliable because of the `require` function's caching, if I retriggered an import of a file that had just changed while the app was running, then it would not see the new changes. So I had to clear the required cache first, but this led to other issues, with hot reloading effects taking almost 10 seconds to appear. I had to drop this pursuit for now, but I believe it may have to do with using Bun and Elysia, which are both pretty new, and always have some edge cases.
+
+Now onto React. I had the intention initially of implementing every feature of Nextjs, that is server-side-rendering, static-site-generation, and many more. I finally just went for the basics and implemented server-side-rendering to get the same behavior I would have had using express.js and handlebars. My initial implementation was not anything complex as I could just use a function from the React library that converts a React component to an html string. However it got harder when I introduced asynchronous components to support doing database calls in a component to load data. I spent hours learning my biggest lesson, I followed exactly React's documentation, which made complete sense to me, and to some people I asked help to.
+However the problem was actually a lack of documentation from the Elysia router that was caught by a friend who started dissecting the router handler that is used to render a page. React asynchronous components are rendered using `renderToReadableStream`, which is a `Response` object. In the browser I would see the rendered page, but as HTML text, not rendered as HTML. The reason is the content type was not set to `text/html`, because when I returned to the component, the new `Response` object would overwrite my default content type.
+
+This was a long way of saying that debugging only works when you also "debug" assumptions, and that it is not as easy as it seems.
+
+Finally this project coincided with me starting a new job where I was expected to learn AWS as fast as possible, so I used this project to learn about deploying apps to AWS. The AWS platform was scary and discovering and navigating it took a few hours, but after that, I deployed the app to an EC2 instance, with an nginx reverse proxy. At that point everything was smooth. However I believe an EC2 instance is not the right approach for a web app, my app goes down pretty regularly, and I always need to log back in and restart it. From my research, I have not had time to learn it for this project, but I will soon be to dockerize the app, and use AWS ECS, which is an orchestrator of containers, so it would handle the scaling or restarting for me.
+
+In conclusion, I learned a lot from this seemingly irrelevant project, and I am much more confident now using and discussing modern frameworks, however I look forward to not using my Prev anymore and going back to the comfort of Next.
