@@ -31,7 +31,7 @@ export async function POST({ body, redirect, cookie }: Context) {
     })
     cookie['user'].maxAge = 7 * 24 * 60 * 60 // 7 days
 
-    return redirect(`/user/${user.id}`)
+    return redirect(`/`)
   } catch (error: any) {
     if (error.message.includes('already exists')) {
       return redirect(

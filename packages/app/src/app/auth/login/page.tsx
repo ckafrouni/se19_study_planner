@@ -6,8 +6,22 @@ import {
 } from '@/components/ui/form'
 
 import { API_ERRORS, ErrorType } from '@/app/api/errors'
+import { Context } from 'elysia'
 
-export default ({ query }: { query: Record<string, string> }) => {
+export default ({
+  query,
+  ctx,
+}: {
+  query: Record<string, string>
+  ctx: Context
+}) => {
+  const user = JSON.parse(ctx.cookie['user']?.value || 'null')
+
+  // Redirect to home if already logged in
+  if (user) {
+    throw ctx.redirect('/')
+  }
+
   return (
     <div className="w-full max-w-md space-y-8 place-self-center rounded-lg p-8">
       <div>
