@@ -1,12 +1,6 @@
 import { authDal } from '@/db'
 import { Context } from 'elysia'
-
-export const ERROR_TYPES = {
-  invalid_credentials: {
-    code: 'invalid_credentials',
-    message: 'Invalid credentials',
-  },
-} as const
+import { API_ERRORS } from '@/app/api/errors'
 
 export async function POST({ body, set, redirect, cookie }: Context) {
   // @ts-ignore
@@ -15,7 +9,7 @@ export async function POST({ body, set, redirect, cookie }: Context) {
   const user = await authDal.verifyCredentials(email, password)
   if (!user) {
     set.status = 401
-    return redirect(`/auth/login?error=${ERROR_TYPES.invalid_credentials.code}`)
+    return redirect(`/auth/login?error=${API_ERRORS.invalid_credentials.code}`)
   }
 
   const session = await authDal.createSession(user.id)

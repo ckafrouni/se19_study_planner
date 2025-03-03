@@ -59,3 +59,25 @@ export const sessions = sqliteTable('sessions', {
 
 export type InsertSession = typeof sessions.$inferInsert
 export type SelectSession = typeof sessions.$inferSelect
+
+// MARK: - Tasks
+export const tasksTable = sqliteTable('tasks', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  task: text('task').notNull(),
+  status: text('status', { enum: ['TODO', 'DONE'] })
+    .notNull()
+    .default('TODO'),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertTask = typeof tasksTable.$inferInsert
+export type SelectTask = typeof tasksTable.$inferSelect

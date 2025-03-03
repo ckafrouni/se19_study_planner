@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/libsql'
 import { AuthDAL } from './dal/users'
 import { env } from '../../env'
+import { TasksDAL } from './dal/tasks'
 
 console.log(env.TURSO_CONNECTION_URL, env.TURSO_AUTH_TOKEN)
 // log pwd
@@ -14,3 +15,4 @@ export const db = drizzle({
 })
 
 export const authDal = new AuthDAL(db)
+export const tasksDal = new TasksDAL(db)

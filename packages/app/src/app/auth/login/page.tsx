@@ -5,7 +5,7 @@ import {
   FormFieldGroup,
 } from '@/components/ui/form'
 
-import { ERROR_TYPES } from '@/app/api/auth/login/route'
+import { API_ERRORS } from '@/app/api/errors'
 
 export default ({ query }: { query: Record<string, string> }) => {
   return (
@@ -44,7 +44,7 @@ export default ({ query }: { query: Record<string, string> }) => {
 
       {query?.error && (
         <div className="text-center text-red-600">
-          {ERROR_TYPES[query.error as keyof typeof ERROR_TYPES]?.message}
+          {API_ERRORS[query.error as keyof typeof API_ERRORS]?.message}
         </div>
       )}
     </div>

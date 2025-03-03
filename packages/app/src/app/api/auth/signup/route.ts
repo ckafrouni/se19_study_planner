@@ -1,24 +1,6 @@
 import { authDal } from '@/db'
 import { Context } from 'elysia'
-
-export const ERROR_TYPES = {
-  incomplete_data: {
-    code: 'incomplete_data',
-    message: 'Incomplete data',
-  },
-  password_too_short: {
-    code: 'password_too_short',
-    message: 'Password is too short',
-  },
-  user_already_exists: {
-    code: 'user_already_exists',
-    message: 'User already exists',
-  },
-  unknown_error: {
-    code: 'unknown_error',
-    message: 'Unknown error',
-  },
-} as const
+import { API_ERRORS } from '@/app/api/errors'
 
 export async function POST({ body, redirect, cookie }: Context) {
   // @ts-ignore
@@ -26,11 +8,11 @@ export async function POST({ body, redirect, cookie }: Context) {
 
   // Validate inputs
   if (!name || !email || !password) {
-    return redirect(`/auth/signup?error=${ERROR_TYPES.incomplete_data.code}`)
+    return redirect(`/auth/signup?error=${API_ERRORS.incomplete_data.code}`)
   }
 
   if (password.length < 8) {
-    return redirect(`/auth/signup?error=${ERROR_TYPES.password_too_short.code}`)
+    return redirect(`/auth/signup?error=${API_ERRORS.password_too_short.code}`)
   }
 
   try {
@@ -53,9 +35,9 @@ export async function POST({ body, redirect, cookie }: Context) {
   } catch (error: any) {
     if (error.message.includes('already exists')) {
       return redirect(
-        `/auth/signup?error=${ERROR_TYPES.user_already_exists.code}`
+        `/auth/signup?error=${API_ERRORS.user_already_exists.code}`
       )
     }
-    return redirect(`/auth/signup?error=${ERROR_TYPES.unknown_error.code}`)
+    return redirect(`/auth/signup?error=${API_ERRORS.unknown_error.code}`)
   }
 }

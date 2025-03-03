@@ -4,7 +4,7 @@ export default function Footer({ className }: { className?: string }) {
       className={`border-t border-gray-200 bg-white text-sm text-gray-500 ${className}`}
     >
       <div className="container mx-auto flex w-full items-center justify-between p-3">
-        <p className="text-xs text-gray-500">2024 Study Planner.</p>
+        <p className="text-xs text-gray-500">2025 Study Planner.</p>
 
         <div className="flex gap-2">
           <a

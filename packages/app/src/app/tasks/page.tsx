@@ -1,76 +1,49 @@
 import { Form, FormField } from '@/components/ui/form'
+import { authDal, tasksDal } from '@/db'
+import { SelectTask } from '@/db/schema'
 import {
   PlusCircleIcon,
   SquareCheck,
   Square,
   Pencil,
   Check,
+  LucideDelete,
 } from 'lucide-react'
 
-type Task = {
-  id: number
-  task: string
-  status: 'TODO' | 'DONE'
-  createdAt: string
-  updatedAt: string
-}
+const QUERY_KEYS = ['edit', 'task_id'] as const
 
-const tasksTable: Task[] = [
-  {
-    id: 1,
-    task: 'Take out the trash',
-    status: 'DONE',
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
-  },
-  {
-    id: 2,
-    task: 'Buy groceries',
-    status: 'DONE',
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
-  },
-  {
-    id: 3,
-    task: 'Pay bills',
-    status: 'TODO',
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
-  },
-]
-
-// Modifies the task with the given id in the table
-function toggleTaskStatus(taskId: number | null) {
-  console.log('toggleTaskStatus', taskId)
-  if (!taskId) return
-  const task = tasksTable.find((t) => t.id === taskId)
-  if (!task) return
-
-  task.status = task.status === 'TODO' ? 'DONE' : 'TODO'
-}
-
-const QUERY_KEYS = ['toggle_status', 'edit', 'task_id'] as const
-
-export default function TasksPage({
+export default async function TasksPage({
   query,
+  ctx: { cookie, redirect },
 }: {
   query: Record<string, string>
+  ctx: { cookie: any; redirect: any }
 }) {
-  const { toggle_status, edit, task_id } = query
+  // Check if the user is authenticated
+  const sessionToken = cookie.sessionToken.value
+  console.log(sessionToken)
+  if (!sessionToken) {
+    throw redirect('/auth/login')
+  }
 
-  const toggleStatus = toggle_status !== 'true'
-  const editTask = edit !== 'true'
+  const session = await authDal.getSessionByToken(sessionToken)
+
+  if (!session) {
+    throw redirect('/auth/login')
+  }
+
+  // Get the query parameters
+  const { edit, task_id } = query
+
+  const editTask = edit == 'true'
   const taskId = task_id ? Number(task_id) : null
 
   console.log('taskId', taskId)
-  console.log('toggleStatus', toggleStatus)
   console.log('editTask', editTask)
 
-  if (toggleStatus) {
-    toggleTaskStatus(taskId)
-  }
+  // Get tasks
+  const tasks = await tasksDal.getAllTasks({ userId: session.userId })
 
-  const tasks = tasksTable
   return (
     <div className="container mx-auto flex flex-col gap-4 py-4">
       <AddTaskForm />
@@ -90,8 +63,8 @@ function AddTaskForm() {
           required
           className="mb-0"
         />
-        <button type="submit" className="">
-          <PlusCircleIcon className="" />
+        <button type="submit" className="flex items-center">
+          <PlusCircleIcon className="text-neutral-500 hover:text-black" />
         </button>
       </Form>
     </div>
@@ -103,16 +76,18 @@ function TasksList({
   editTask,
   taskId,
 }: {
-  tasks: Task[]
+  tasks: SelectTask[]
   editTask: boolean
   taskId: number | null
 }) {
   return (
     <div>
       <h2 className="text-2xl font-bold">Your Tasks</h2>
-      {tasks.map((task) => (
-        <Task key={task.id} task={task} editTask={editTask} taskId={taskId} />
-      ))}
+      <div className="mt-2 flex flex-col gap-2">
+        {tasks.map((task) => (
+          <Task key={task.id} task={task} editTask={editTask} taskId={taskId} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -122,42 +97,62 @@ function Task({
   editTask,
   taskId,
 }: {
-  task: Task
+  task: SelectTask
   editTask: boolean
   taskId: number | null
 }) {
   return (
-    <div className="flex justify-between text-start">
-      <div className="flex">
-        <a
-          href={`/tasks?toggle_status=true&taskId=${task.id}`}
-          aria-disabled={editTask}
+    <div className="flex items-center gap-2 text-start">
+      <form
+        action={`/api/tasks/${task.id}`}
+        method="post"
+        className="flex text-neutral-500 hover:text-black"
+      >
+        {task.status === 'TODO' ? (
+          <button type="submit" className="" name="status" value="DONE">
+            <Square />
+          </button>
+        ) : (
+          <button type="submit" className="" name="status" value="TODO">
+            <SquareCheck />
+          </button>
+        )}
+      </form>
+
+      {editTask && taskId === task.id ? (
+        <form
+          action={`/api/tasks/${task.id}`}
+          method="POST"
+          className="flex flex-1 gap-2"
         >
-          {task.status === 'TODO' && <Square />}
-          {task.status === 'DONE' && <SquareCheck />}
-        </a>
-        <div className="flex-1">
-          {editTask && taskId === task.id && (
-            <Form action={`/api/tasks/${task.id}`} method="PATCH">
-              <FormField
-                name="task"
-                type="text"
-                defaultValue={task.task}
-                required
-                className="mb-0"
-                placeholder="Task"
-              />
-              <button type="submit" className="">
-                <Check />
-              </button>
-            </Form>
-          )}
-          {task.task}
-        </div>
-      </div>
-      <a href={`/tasks?edit=true&task_id=${task.id}`} aria-disabled={editTask}>
-        <Pencil />
-      </a>
+          <FormField
+            name="task"
+            type="text"
+            defaultValue={task.task}
+            required
+            placeholder="Task"
+          />
+          <button type="submit" className="">
+            <Check />
+          </button>
+        </form>
+      ) : (
+        <>
+          <div className="flex-1">{task.task}</div>
+          <a
+            className="text-neutral-500 hover:text-black"
+            href={`/tasks?edit=true&task_id=${task.id}`}
+            aria-disabled={editTask}
+          >
+            <Pencil />
+          </a>
+          <form action={`/api/tasks/${task.id}`} method="post">
+            <button type="submit" name="delete" value="true">
+              <LucideDelete className="text-red-500 hover:text-red-700" />
+            </button>
+          </form>
+        </>
+      )}
     </div>
   )
 }

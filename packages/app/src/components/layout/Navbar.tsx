@@ -17,9 +17,15 @@ export default function Navbar({
       className={`h-16 w-full border-b border-gray-200 bg-white p-3 text-sm ${className}`}
     >
       <div className="container mx-auto flex items-center justify-between">
-        <h1 className="text-xl font-bold">
-          <a href="/">Study Planner</a>
-        </h1>
+        {user ? (
+          <>
+            <ButtonLink href="/tasks">Tasks</ButtonLink>
+          </>
+        ) : (
+          <h1 className="text-xl font-bold">
+            <a href="/">Study Planner</a>
+          </h1>
+        )}
 
         <div className="flex gap-2">
           {user ? (
