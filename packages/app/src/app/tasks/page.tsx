@@ -79,7 +79,10 @@ function TasksList({
   return (
     <div>
       <h2 className="text-2xl font-bold">Your Tasks</h2>
-      <div className="mt-2 flex flex-col gap-2">
+      <div className="mt-2 flex flex-col gap-2 text-center">
+        {tasks.length === 0 && (
+          <p className="text-neutral-500">You have no tasks</p>
+        )}
         {tasks.map((task) => (
           <Task key={task.id} task={task} editTask={editTask} taskId={taskId} />
         ))}
