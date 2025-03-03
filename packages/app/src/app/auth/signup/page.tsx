@@ -5,7 +5,7 @@ import {
   FormFieldGroup,
 } from '@/components/ui/form'
 
-import { API_ERRORS } from '@/app/api/errors'
+import { API_ERRORS, ErrorType } from '@/app/api/errors'
 
 export default ({ query }: { query: Record<string, string> }) => {
   return (
@@ -28,6 +28,10 @@ export default ({ query }: { query: Record<string, string> }) => {
           />
         </FormFieldGroup>
 
+        <p className="text-xs text-neutral-600">
+          Password must be at least 8 characters long
+        </p>
+
         <FormButton
           type="submit"
           className="w-full bg-neutral-800 text-white hover:bg-neutral-900"
@@ -45,7 +49,7 @@ export default ({ query }: { query: Record<string, string> }) => {
 
       {query?.error && (
         <div className="text-center text-red-600">
-          {API_ERRORS[query.error as keyof typeof API_ERRORS]?.message}
+          {API_ERRORS[query.error as ErrorType]?.message}
         </div>
       )}
     </div>
