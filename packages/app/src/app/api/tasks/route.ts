@@ -23,7 +23,7 @@ export const POST = async ({ body, set, redirect, cookie }: Context) => {
       userId: session.userId,
       task,
     })
-    throw redirect(`/tasks`)
+    return redirect(`/tasks`)
   } catch (error) {
     console.error('Failed to create task:', error)
     throw redirect(`/tasks?error=${API_ERRORS.failed_to_create_task.code}`)
