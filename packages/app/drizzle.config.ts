@@ -16,6 +16,6 @@ export default defineConfig({
   out: './src/db/migrations',
   dialect: 'sqlite',
   dbCredentials: {
-    url: env.TURSO_CONNECTION_URL,
+    url: env.DATABASE_URL,
   },
 })

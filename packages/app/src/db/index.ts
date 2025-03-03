@@ -5,8 +5,7 @@ import { TasksDAL } from './dal/tasks'
 
 export const db = drizzle({
   connection: {
-    url: env.TURSO_CONNECTION_URL!,
-    authToken: env.TURSO_AUTH_TOKEN!,
+    url: env.DATABASE_URL!,
   },
 })
 

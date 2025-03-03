@@ -4,13 +4,11 @@
 // export const env = createEnv({
 //   server: z.object({
 //     NODE_ENV: z.enum(['development', 'production']).default('development'),
-//     TURSO_CONNECTION_URL: z.string(),
-//     TURSO_AUTH_TOKEN: z.string(),
+//     DATABASE_URL: z.string(),
 //   }),
 //   runtimeEnv: {
 //     NODE_ENV: process.env.NODE_ENV,
-//     TURSO_CONNECTION_URL: process.env.TURSO_CONNECTION_URL,
-//     TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
+//     DATABASE_URL: process.env.DATABASE_URL,
 //   },
 // })
 
@@ -19,7 +17,6 @@ import dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
 
 export const env = {
-  TURSO_CONNECTION_URL: process.env.TURSO_CONNECTION_URL!,
-  TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN!,
+  DATABASE_URL: process.env.DATABASE_URL!,
   NODE_ENV: process.env.NODE_ENV!,
 }

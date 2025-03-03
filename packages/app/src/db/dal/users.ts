@@ -14,7 +14,7 @@ import { randomBytes } from 'crypto'
 import bcrypt from 'bcrypt'
 
 /**
- * Authentication Data Access Layer for Turso/LibSQL
+ * Authentication Data Access Layer for LibSQL
  * - Authentication via password uses bcrypt
  * - Handles all database operations related to users, authentication, and sessions
  */

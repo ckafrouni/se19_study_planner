@@ -7,8 +7,7 @@
     "start": "bun run ../prev/index.ts start",
     "db:studio": "drizzle-kit studio",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:turso:dump": "turso db shell drizzle-turso-db .dump > src/db/dump.sql && cat src/db/dump.sql | sqlite3 local.db"
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
