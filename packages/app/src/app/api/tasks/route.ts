@@ -3,11 +3,8 @@ import { Context } from 'elysia'
 import { API_ERRORS } from '@/app/api/errors'
 
 export const POST = async ({ body, set, redirect, cookie }: Context) => {
-  console.log(`DEBUG: POST /api/tasks`, body)
-
   // Check if the user is authenticated
   const sessionToken = cookie.sessionToken.value
-  console.log(sessionToken)
   if (!sessionToken) {
     throw redirect('/auth/login')
   }
@@ -17,8 +14,6 @@ export const POST = async ({ body, set, redirect, cookie }: Context) => {
   if (!session) {
     throw redirect('/auth/login')
   }
-
-  console.log(`DEBUG: POST /api/tasks`, body)
 
   // @ts-ignore
   const { task } = body

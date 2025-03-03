@@ -8,11 +8,8 @@ export const POST = async ({
   redirect,
   body,
 }: Context) => {
-  console.log(`DEBUG: POST /api/tasks/[task_id]`, task_id, body)
-
   // Check if the user is authenticated
   const sessionToken = cookie.sessionToken.value
-  console.log(sessionToken)
   if (!sessionToken) {
     throw redirect('/auth/login')
   }

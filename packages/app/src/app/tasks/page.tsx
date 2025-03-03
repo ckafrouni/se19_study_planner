@@ -21,7 +21,6 @@ export default async function TasksPage({
 }) {
   // Check if the user is authenticated
   const sessionToken = cookie.sessionToken.value
-  console.log(sessionToken)
   if (!sessionToken) {
     throw redirect('/auth/login')
   }
@@ -37,9 +36,6 @@ export default async function TasksPage({
 
   const editTask = edit == 'true'
   const taskId = task_id ? Number(task_id) : null
-
-  console.log('taskId', taskId)
-  console.log('editTask', editTask)
 
   // Get tasks
   const tasks = await tasksDal.getAllTasks({ userId: session.userId })

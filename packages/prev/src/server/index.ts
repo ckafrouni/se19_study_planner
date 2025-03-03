@@ -37,7 +37,6 @@ export function generateRouter({
   ip: string
 }): Elysia {
   const appStructure = buildAppStructure(dir)
-  // console.log(JSON.stringify(appStructure, null, 2));
   return routerReducer(new Elysia(), appStructure, [], ip)
 }
 
