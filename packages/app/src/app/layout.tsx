@@ -2,12 +2,13 @@ import { Context } from 'elysia'
 
 import Footer from '@/components/layout/Footer'
 import Navbar from '@/components/layout/Navbar'
+import { ReactNode } from 'react'
 
 export default function RootLayout({
   children,
   ctx,
 }: {
-  children: JSX.Element
+  children: ReactNode
   ctx: Context
 }) {
   return (

@@ -41,7 +41,7 @@ export default async function TasksPage({
   const tasks = await tasksDal.getAllTasks({ userId: session.userId })
 
   return (
-    <div className="container mx-auto flex flex-col gap-4 py-4">
+    <div className="container mx-auto flex flex-col gap-4 p-3">
       <AddTaskForm />
       <TasksList tasks={tasks} editTask={editTask} taskId={taskId} />
     </div>
